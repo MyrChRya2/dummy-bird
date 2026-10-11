@@ -10,6 +10,7 @@
 |---|---|
 | 项目名 | DummyBird（占位名，未定稿） |
 | 仓库根 | `/mnt/d/Fox_n/!PROJECTS/#software/Projects/games/dummy-bird` |
+| 远端仓库 | **公开** · `git@github.com:MyrChRya2/dummy-bird.git`（MIT） |
 | 引擎 | Godot **4.7.1** stable（`D:\Fox_n\!PROJECTS\#software\Engines\Godot_v4.7.1-stable_win64.exe`） |
 | 目标平台 | 待定（桌面优先） |
 | 渲染器 | `Forward Plus`（非 2D 精灵游戏的常规选择，见「待决策 #1」） |
@@ -94,6 +95,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（6）：推送为 GitHub 公开仓 `MyrChRya2/dummy-bird`（MIT）；M0 基建里程碑完成。
 - 2026-10-11（5）：确定开源许可 **MIT**；新增根目录 `LICENSE`；登记 `GAME/icon.svg` 为 Godot 官方默认图标（第三方内容）。
 - 2026-10-11（4）：删除本仓 `templates/` 副本（用户拍板）——模板只保留独立仓 `../godot-game-template/`，消除双副本漂移；本仓起盘入口改为指向独立仓。
 - 2026-10-11（3）：渲染器切 `Compatibility`；`SORCE/`→`SOURCE/`；模板抽出独立仓 `../godot-game-template/`；新增 `GAME/tools/set_renderer.gd`；文件树模板升 v0.2（T1–T5 全部已决）。
