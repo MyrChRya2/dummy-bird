@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://d1vjt3fv43chs" path="res://DEV/test_scenes/obstacle.tscn" id="1_on746"]
 [ext_resource type="PackedScene" uid="uid://biycq5yemodc6" path="res://scenes/Player.tscn" id="2_5il0l"]
 
-[node name="TestScence" type="Node2D" unique_id=659932837]
+[node name="TestScene" type="Node2D" unique_id=659932837]
 
 [node name="Obstacle" parent="." unique_id=1600674002 instance=ExtResource("1_on746")]
 position = Vector2(0, 180)

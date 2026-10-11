@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://wtm6bborgglh"
-path="res://.godot/imported/Eroor.png-8ea748073956902781880e562658f35e.ctex"
+path="res://.godot/imported/Error.png-6d171bedbe31878076cd6f042acd6f5a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprite/error/Eroor.png"
-dest_files=["res://.godot/imported/Eroor.png-8ea748073956902781880e562658f35e.ctex"]
+source_file="res://assets/sprite/error/Error.png"
+dest_files=["res://.godot/imported/Error.png-6d171bedbe31878076cd6f042acd6f5a.ctex"]
 
 [params]
 

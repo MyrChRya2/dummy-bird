@@ -50,7 +50,7 @@
 | `GAME/.editorconfig` `.gitattributes` `.gitignore` | 引擎目录内的编辑器/Git 局部约定 |
 | `GAME/assets/` | 运行时素材。现有 `sprite/entity/player.png`、`sprite/tile/tiles.png`、`sprite/error/Eroor.png`；目录约定 `sprite/{bg,entity,item,tile,error}`、`audio/{bgm,sfx}`、`font/`、`ui/` |
 | `GAME/scenes/` | 正式场景：`Player.tscn`（角色：CharacterBody2D + AnimatedSprite2D + CircleShape2D + Jump 子节点）、`playground.tscn`（**当前主场景**，已实例化 Player） |
-| `GAME/scripts/` | GDScript：`Player.gd`、`jump.gd`、`00_movement.gd`（另有 `state.svg`，见「七之二」待整理） |
+| `GAME/scripts/` | GDScript：`Player.gd`、`jump.gd`、`00_movement.gd`；`state.svg` 是作者自定义的**节点图标**（由 `@icon("res://scripts/state.svg")` 引用，勿移动） |
 | `GAME/DEV/` | **开发草稿区**——现为 `test_scenes/{obstacle,test_scence}.tscn`，不作正式资产；稳定后再移入 `scenes/` |
 
 ## 四、仓库外配合目录
@@ -99,6 +99,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（9）：处理 4 项整理项——state.svg 保持原地（确认是自定义节点图标）、Eroor→Error 改名、SOURCE 保留组织并补 README、test_scence→test_scene；索引同步。
 - 2026-10-11（8）：同步开发进展——`scenes/`（Player/playground）、`scripts/`（Player/jump/00_movement）、`assets/sprite/{entity,tile,error}`、`DEV/test_scenes/`、`SOURCE/Resprite/`（美术源文件母版）；并登记 4 项待整理。
 - 2026-10-11（7）：新增 `GAME/tools/{set_pixel_perfect,setup_input_map}.gd`；定义 `flap` 输入动作（鼠标左键/空格/屏幕轻触）；修正 `.gitignore` 误忽略 `export_presets.cfg`，纳入 `*.uid`，补签名密钥忽略；模板仓同步修正。
 - 2026-10-11（6）：推送为 GitHub 公开仓 `MyrChRya2/dummy-bird`（MIT）；M0 基建里程碑完成。
@@ -108,16 +109,16 @@ dummy-bird/                        # 项目根（Git 仓库根）
 - 2026-10-11（2）：补设主场景 `scenes/playground.tscn`；新增 `GAME/tools/set_main_scene.gd`；模板加入默认主场景 `Main.tscn`。
 - 2026-10-11：创建本文件（索引首版）；建立仓库与 Godot 工程目录规范。
 
-## 七之二、待整理（发现的问题，尚未处理）
+## 七之二、已处理的整理项（2026-10-11 用户逐项拍板）
 
-| # | 问题 | 建议 |
-|---|---|---|
-| 1 | `GAME/scripts/state.svg` 是图片却放在 `scripts/` 里（连 `.import` 一起） | 移到 `GAME/assets/ui/` 或 `assets/sprite/`；若它是脚本目录的说明图，改放 `docs/`。**Godot 只认 `res://` 路径，移动须在编辑器里拖拽** |
-| 2 | `sprite/error/Eroor.png` 拼写 `Eroor` → `Error` | 统一拼写（趁引用还少）；改名同样要在编辑器里做 |
-| 3 | `SOURCE/Resprite/` 与 `GAME/assets/sprite/` 不同构（按"工具/项目名"分层，而非按用途） | 两种都行。若保持现状，建议在 `SOURCE/` 放一份 `README.md` 说明"哪个源文件导出到哪个运行时路径"，避免以后对不上 |
-| 4 | `DEV/test_scenes/test_scence.tscn` 拼写 `scence` → `scene` | 与早先的 `scense` 是同一类问题，建议顺手改 |
+| # | 事项 | 用户决定 | 落实 |
+|---|---|---|---|
+| 1 | `GAME/scripts/state.svg` 的归属 | 「是我自定义的**节点图标**，先不用动」 | **保持原地**。它是 `00_movement.gd` 第 1 行 `@icon("res://scripts/state.svg")` 用的**自定义节点图标**，位置与用途一致，非误放。⚠️ 它是被 `res://` 引用的，**别随意移动**，否则要同步改 `@icon` 路径 |
+| 2 | `sprite/error/Eroor.png` 拼写 | 「**改名**」 | 已改为 `Error`（PNG + `.import` + `SOURCE/` 侧 `Error.resprite`/`Error.png` 一并改，保持源↔成品同名对应）；Godot 重新导入成功，全工程 0 处残留 |
+| 3 | `SOURCE/` 与 `assets/` 不同构 | 「**保留原样**」 | 保持"按工具/项目名分层"。已补 `SOURCE/README.md`，写明**每个源文件导出到哪个运行时路径** + 尺寸，代替"两边同名"的隐含约定 |
+| 4 | `DEV/test_scenes/test_scence.tscn` 拼写 | 「**修成拼写**」 | 已改为 `test_scene.tscn`，根节点名 `TestScence` → `TestScene`；该场景**零外部引用**，改动安全 |
 
-> 以上均为**建议**，不是阻断项；等你决定即可，需要我改就安排。
+> 执行方式说明：本次改动经**引用检查**确认无风险后才动手（`Eroor` 只被自身 `.import` 引用；`test_scence` 零外部引用）。按 Godot 的规矩，**移动有引用的文件应在编辑器里拖拽**；本次是"零引用的改名"，且已用 `--headless --editor` 重新扫描验证通过。
 
 ## 八、许可与第三方内容
 
