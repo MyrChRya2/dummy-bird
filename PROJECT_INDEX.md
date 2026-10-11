@@ -30,7 +30,7 @@
 
 | 路径 | 作用 |
 |------|------|
-| `.gitignore` | 根级 Git 忽略规则（**含 `.dsh-meow/` 记忆库保护**、`.godot/` 生成物） |
+| `.gitignore` | 根级 Git 忽略规则（**含 `.dsh-meow/` 记忆库保护**、`.godot/` 生成物、签名密钥）；⚠️ 有意**不忽略** `export_presets.cfg` 与 `*.uid`（官方建议入库） |
 | `.gitattributes` | Git 属性（换行符统一 `eol=lf`） |
 | `.editorconfig` | 编辑器统一配置（UTF-8） |
 | `PROJECT_INDEX.md` | 本文件 — 索引与 skill 配置入口 |
@@ -42,7 +42,11 @@
 |------|------|
 | `GAME/project.godot` | Godot 工程配置（引擎版本、渲染器、窗口拉伸、物理引擎、**主场景**） |
 | `GAME/icon.svg(+.import)` | 工程图标 |
-| `GAME/tools/set_main_scene.gd` | **工具脚本**——设置主场景并写回 `project.godot`（等同编辑器菜单 Project → Project Settings → Application → Run → Main Scene）；不传参默认 `res://scenes/Main.tscn`，可传参指定。用法见脚本头部注释 |
+| `GAME/tools/` | **工程设置工具集**（全部走引擎 API 写回 `project.godot`，不手改文本；用法见各脚本头部注释） |
+| `GAME/tools/set_main_scene.gd` | 设置主场景（等同 Project Settings → Application → Run → Main Scene） |
+| `GAME/tools/set_renderer.gd` | 切换渲染器（gl / forward / mobile） |
+| `GAME/tools/set_pixel_perfect.gd` | **像素完美渲染地基**：Nearest 过滤 + 视口尺寸 + 拉伸方式 + 横屏，一条命令重置 |
+| `GAME/tools/setup_input_map.gd` | 注入 `flap` 输入动作（鼠标左键 / 空格 / 屏幕轻触） |
 | `GAME/.editorconfig` `.gitattributes` `.gitignore` | 引擎目录内的编辑器/Git 局部约定 |
 | `GAME/assets/` | 运行时素材（`sprite/{bg,entity,item,tile}`、`audio/`） |
 | `GAME/scenes/` | 正式场景（`.tscn`）。当前主场景 = `scenes/playground.tscn` |
@@ -95,6 +99,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（7）：新增 `GAME/tools/{set_pixel_perfect,setup_input_map}.gd`；定义 `flap` 输入动作（鼠标左键/空格/屏幕轻触）；修正 `.gitignore` 误忽略 `export_presets.cfg`，纳入 `*.uid`，补签名密钥忽略；模板仓同步修正。
 - 2026-10-11（6）：推送为 GitHub 公开仓 `MyrChRya2/dummy-bird`（MIT）；M0 基建里程碑完成。
 - 2026-10-11（5）：确定开源许可 **MIT**；新增根目录 `LICENSE`；登记 `GAME/icon.svg` 为 Godot 官方默认图标（第三方内容）。
 - 2026-10-11（4）：删除本仓 `templates/` 副本（用户拍板）——模板只保留独立仓 `../godot-game-template/`，消除双副本漂移；本仓起盘入口改为指向独立仓。
