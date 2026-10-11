@@ -25,7 +25,7 @@
 | 0.2 | 规范 Godot 工程目录（修正拼写、场景归位） | `GAME/` 下为 `assets/scenes/scripts/DEV` | ✅ 2026-10-11 |
 | 0.3 | 建立文档体系（PROJECT_INDEX / GDD / ROADMAP / devlog） | 四份文档就位且互相引用不重复 | ✅ 2026-10-11 |
 | 0.4 | 沉淀游戏文件树基础模板（跨项目复用） | `docs/PROJECT_TREE_TEMPLATE.md` + `templates/godot-2d/` | ✅ 2026-10-11 |
-| 0.5 | 设置主场景 + 跑通一次 F5 运行 | 编辑器里按 F5 能直接进游戏 | ⬜ |
+| 0.5 | 设置主场景 + 跑通一次 F5 运行 | 编辑器里按 F5 能直接进游戏 | ✅ 2026-10-11（主场景=`scenes/playground.tscn`，无头运行 exit=0，见 devlog 2026-10-11） |
 | 0.6 | 首次推送远端（GitHub） | `git remote -v` 有 origin 且 main 已同步 | ⬜ |
 
 ## 2. M1 核心玩法原型 —— 任务清单
@@ -46,6 +46,8 @@
 - **2026-10-11 `DEV/` 定位为开发草稿区** → 原型阶段允许混乱，正式资产必须有唯一的规范位置；草稿稳定后再"晋升"到 `scenes/`、`scripts/`。（用户原话："DEV是开发草稿区"）
 - **2026-10-11 修正目录拼写 `assest→assets`、`scense→scenes`、`script→scripts`** → 趁两个场景 `.tscn` 还没有任何 `res://` 交叉引用时改名，零风险；拼写错误的目录名会长期污染检索与肌肉记忆。
 - **2026-10-11 文件树模板以"仓库内文档 + 可复制骨架"形式沉淀** → Godot 官方 Project Manager 目前不支持自定义项目模板（见 [proposal #3388](https://github.com/godotengine/godot-proposals/issues/3388)、[discussion #11935](https://github.com/godotengine/godot-proposals/discussions/11935)），因此用「复制骨架」替代官方的"新建时选模板"。
+- **2026-10-11 模板必须自带默认主场景 `scenes/Main.tscn`** → 新建的 Godot 工程没有 `run/main_scene` 时，按 F5 会报 `Error: Can't run project: no main scene defined`。工程起盘期这是"第一个必踩的坑"，属于模板应当消除的摩擦，不该留给使用者。
+- **2026-10-11 主场景用 `tools/set_main_scene.gd` 写入，而非手改 `project.godot`** → 走引擎的 `ProjectSettings.save()`，落盘格式与编辑器菜单设置完全一致（UID 引用等细节由引擎决定）；手写文本有格式漂移风险。
 
 ## 4. Bug 跟踪表
 

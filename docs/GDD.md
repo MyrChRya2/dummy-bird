@@ -41,7 +41,7 @@
 | 渲染器 | **Forward Plus** |
 | 窗口拉伸 | `canvas_items` + `aspect=expand` |
 | 物理引擎 | 3D 侧 `Jolt Physics`（2D 项目无关） |
-| 主场景 | ⬜ 未设置（`run/main_scene` 为空，编辑器按 F5 会要求指定） |
+| 主场景 | `scenes/playground.tscn`（2026-10-11 设置；起盘占位，正式开发时替换，用 `GAME/tools/set_main_scene.gd` 改） |
 
 ### 5.2 待定架构项
 

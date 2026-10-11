@@ -38,11 +38,12 @@
 
 | 路径 | 作用 |
 |------|------|
-| `GAME/project.godot` | Godot 工程配置（引擎版本、渲染器、窗口拉伸、物理引擎） |
+| `GAME/project.godot` | Godot 工程配置（引擎版本、渲染器、窗口拉伸、物理引擎、**主场景**） |
 | `GAME/icon.svg(+.import)` | 工程图标 |
+| `GAME/tools/set_main_scene.gd` | **工具脚本**——设置主场景并写回 `project.godot`（等同编辑器菜单 Project → Project Settings → Application → Run → Main Scene）；不传参默认 `res://scenes/Main.tscn`，可传参指定。用法见脚本头部注释 |
 | `GAME/.editorconfig` `.gitattributes` `.gitignore` | 引擎目录内的编辑器/Git 局部约定 |
 | `GAME/assets/` | 运行时素材（`sprite/{bg,entity,item,tile}`、`audio/`） |
-| `GAME/scenes/` | 正式场景（`.tscn`） |
+| `GAME/scenes/` | 正式场景（`.tscn`）。当前主场景 = `scenes/playground.tscn` |
 | `GAME/scripts/` | GDScript 脚本（当前为空） |
 | `GAME/DEV/` | **开发草稿区**——原型场景/试验脚本，不作正式资产；稳定后再移入 `scenes/`、`scripts/` |
 
@@ -70,8 +71,9 @@ dummy-bird/                        # 项目根（Git 仓库根）
 ├── GAME/                          # Godot 工程（引擎目录）
 │   ├── project.godot
 │   ├── assets/{sprite,audio}/     # 运行时素材
-│   ├── scenes/                    # 正式场景
+│   ├── scenes/                    # 正式场景（主场景 = playground.tscn）
 │   ├── scripts/                   # GDScript
+│   ├── tools/                     # 引擎侧工具脚本（set_main_scene.gd）
 │   └── DEV/                       # 开发草稿区
 ├── SORCE/                         # 美术/音频源文件母版
 ├── templates/godot-2d/            # 可复用工程骨架
@@ -90,4 +92,5 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（2）：补设主场景 `scenes/playground.tscn`；新增 `GAME/tools/set_main_scene.gd`；模板加入默认主场景 `Main.tscn`。
 - 2026-10-11：创建本文件（索引首版）；建立仓库与 Godot 工程目录规范。
