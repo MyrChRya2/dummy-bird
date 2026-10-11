@@ -4,4 +4,9 @@
 
 [resource]
 script = ExtResource("1_iar1t")
+half_range = 65.0
+freq2 = 0.24
+noise_amp = 0.46
+noise_step = 0.72
+noise_seed = 46190
 metadata/_custom_type_script = "uid://glnro38ctfom"

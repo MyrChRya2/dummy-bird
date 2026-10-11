@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://biycq5yemodc6" path="res://scenes/Player.tscn" id="1_hddm4"]
 [ext_resource type="Script" uid="uid://b4wpkka12j3o0" path="res://DEV/test_scenes/obstacle_spawner.gd" id="2_qchbg"]
 [ext_resource type="Script" uid="uid://dqtrky4eld70c" path="res://tools/curve_preview.gd" id="3_kddj0"]
+[ext_resource type="Script" uid="uid://cckoqj5l0hucq" path="res://tools/curve_tuner.gd" id="4_q8s1k"]
+[ext_resource type="Resource" uid="uid://0i8ah2dqyte5" path="res://resources/ObstacleCurve.tres" id="5_curve"]
 
 [node name="Playground" type="Node2D" unique_id=993541263]
 
@@ -11,6 +13,11 @@ position = Vector2(121, 70)
 
 [node name="ObstacleSpawner" type="Node2D" parent="." unique_id=1489477227]
 script = ExtResource("2_qchbg")
+curve = ExtResource("5_curve")
 
 [node name="CurvePreview" type="Node2D" parent="ObstacleSpawner" unique_id=868926970]
 script = ExtResource("3_kddj0")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="ObstacleSpawner" unique_id=2090634236]
+visible = false
+script = ExtResource("4_q8s1k")

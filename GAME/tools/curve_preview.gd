@@ -32,6 +32,15 @@ extends Node2D
 @export var label_offset := 11.0
 @export var label_color := Color(0.65, 0.85, 1.0, 0.95)
 
+@export_group("曲线中心 / 包络（确认曲线围绕谁上下徘徊）")
+@export var show_center_line := true                # 自动画在 curve.center_y 上（改 center_y 它跟着走）
+@export var center_line_color := Color(0.4, 1.0, 0.5, 0.85)
+@export var center_line_width := 1.0
+@export var center_dash := 6.0
+@export var show_envelope := true                   # 画 center_y ± half_range 两条上下限线
+@export var envelope_color := Color(0.4, 1.0, 0.5, 0.35)
+@export var envelope_label := true                  # 在右端标出这两条线的 y 值
+
 var _spawner: Node2D = null
 var _curve: Resource = null
 var _warned := false
@@ -90,6 +99,9 @@ func _draw() -> void:
 	var u0 := (0.0 - ph) / spacing - du
 	var u1 := (view_w - ph) / spacing + du
 
+	# ⓪ 先画参考线，让点带压在它们上面
+	_draw_reference_lines(view_w)
+
 	# ① 点带：u 取固定步长；ph 随时间变小，于是所有点一起左移
 	var pts := PackedVector2Array()
 	for k in range(int(floor(u0 / du)), int(ceil(u1 / du)) + 1):
@@ -118,6 +130,20 @@ static func _fmt_u(u: float) -> String:
 	if is_equal_approx(u, roundf(u)):
 		return str(int(roundf(u)))
 	return "%.2f" % u
+
+## 曲线的"零线"和上下限：横线不跟 u 走（它们只标 y），直接横跨整屏
+func _draw_reference_lines(view_w: float) -> void:
+	var cy: float = _curve.get("center_y")
+	var font: Font = ThemeDB.fallback_font
+	if show_envelope:
+		var hr: float = _curve.get("half_range")
+		for y in [cy - hr, cy + hr]:
+			draw_dashed_line(Vector2(0.0, y), Vector2(view_w, y), envelope_color, 1.0, 4.0)
+			if envelope_label and font != null:
+				draw_string(font, Vector2(view_w - 32.0, y - 2.0), "%.0f" % y,
+						HORIZONTAL_ALIGNMENT_RIGHT, 30.0, 8, envelope_color)
+	if show_center_line:
+		draw_dashed_line(Vector2(0.0, cy), Vector2(view_w, cy), center_line_color, center_line_width, center_dash)
 
 func _draw_axis(ph: float, view_w: float, spacing: float) -> void:
 	# 轴线
