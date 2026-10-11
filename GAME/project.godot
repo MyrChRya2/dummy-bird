@@ -33,6 +33,10 @@ flap={
 , Object(InputEventScreenTouch,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"index":0,"position":Vector2(0, 0),"canceled":false,"pressed":false,"double_tap":false,"script":null)
 ])
 }
+click={
+"deadzone": 0.2,
+"events": []
+}
 
 [physics]
 

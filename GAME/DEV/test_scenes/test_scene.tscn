@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://02qr76wgei8m"]
 
-[ext_resource type="PackedScene" uid="uid://d1vjt3fv43chs" path="res://DEV/test_scenes/obstacle.tscn" id="1_on746"]
+[ext_resource type="PackedScene" uid="uid://d1vjt3fv43chs" path="res://DEV/test_scenes/obstacle_half.tscn" id="1_on746"]
 [ext_resource type="PackedScene" uid="uid://biycq5yemodc6" path="res://scenes/Player.tscn" id="2_5il0l"]
 
 [node name="TestScene" type="Node2D" unique_id=659932837]

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://pt6cwufj5sqk"]
+
+[ext_resource type="Script" uid="uid://b4wpkka12j3o0" path="res://DEV/test_scenes/obstacle_spawner.gd" id="1_on746"]
+[ext_resource type="Resource" uid="uid://0i8ah2dqyte5" path="res://resources/ObstacleCurve.tres" id="2_5il0l"]
+[ext_resource type="Script" uid="uid://dqtrky4eld70c" path="res://tools/curve_preview.gd" id="3_bhkl1"]
+
+[node name="TestScence" type="Node2D" unique_id=659932837]
+
+[node name="ObstacleSpawner" type="Node2D" parent="." unique_id=982403258]
+script = ExtResource("1_on746")
+curve = ExtResource("2_5il0l")
+
+[node name="CurvePreview" type="Node2D" parent="ObstacleSpawner" unique_id=1940152563]
+script = ExtResource("3_bhkl1")

@@ -1,23 +1,13 @@
-[gd_scene format=4 uid="uid://d1vjt3fv43chs"]
+[gd_scene format=3 uid="uid://chkjsng6pv2a7"]
 
-[ext_resource type="Texture2D" uid="uid://cwyeeua2flyyk" path="res://assets/sprite/tile/tiles.png" id="1_go0x7"]
+[ext_resource type="PackedScene" uid="uid://d1vjt3fv43chs" path="res://DEV/test_scenes/obstacle_half.tscn" id="1_go0x7"]
+[ext_resource type="Script" uid="uid://b1njxbbyjhqr7" path="res://DEV/test_scenes/obstacle.gd" id="2_6yqmv"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1y46u"]
-texture = ExtResource("1_go0x7")
-0:0/0 = 0
+[node name="Obstacle2" type="Node2D" unique_id=1346603064]
+script = ExtResource("2_6yqmv")
 
-[sub_resource type="TileSet" id="TileSet_cs4y6"]
-sources/0 = SubResource("TileSetAtlasSource_1y46u")
+[node name="ObstacleHalf" parent="." unique_id=1600674002 instance=ExtResource("1_go0x7")]
+position = Vector2(-8, 32)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_cs4y6"]
-size = Vector2(16, 95)
-
-[node name="StaticBody2D" type="StaticBody2D" unique_id=1600674002]
-
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=623449152]
-tile_map_data = PackedByteArray("AAAAAPz/AAAAAAAAAAAAAP3/AAAAAAAAAAAAAP7/AAAAAAAAAAAAAP//AAAAAAAAAAAAAPv/AAAAAAAAAAAAAPr/AAAAAAAAAAA=")
-tile_set = SubResource("TileSet_cs4y6")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1084752407]
-position = Vector2(8, -47.5)
-shape = SubResource("RectangleShape2D_cs4y6")
+[node name="ObstacleHalf2" parent="." unique_id=112509639 instance=ExtResource("1_go0x7")]
+position = Vector2(-8, -224)

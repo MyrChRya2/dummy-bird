@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ObstacleCurve" format=3 uid="uid://0i8ah2dqyte5"]
+
+[ext_resource type="Script" uid="uid://glnro38ctfom" path="res://DEV/test_scenes/obstacle_curve.gd" id="1_iar1t"]
+
+[resource]
+script = ExtResource("1_iar1t")
+metadata/_custom_type_script = "uid://glnro38ctfom"
