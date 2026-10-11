@@ -52,7 +52,8 @@
 | 路径 | 作用 | 是否入 Git |
 |------|------|-----------|
 | `SOURCE/` | **美术/音频源文件**（`.aseprite` / `.psd` / `.kra` / `.blend`）。可编辑母版放这里，导出成品进 `GAME/assets/`。 | 是（**必须入库**，源文件无版本控制=无备份） |
-| `templates/godot-2d/` | **可复用工程骨架**——新项目直接复制，详见 `docs/PROJECT_TREE_TEMPLATE.md`。 | 是 |
+| `templates/` | **可复用工程骨架（本仓内的工作副本）**——`godot-2d/` 是骨架，`new-game.sh` 是生成脚本。**单一事实源已抽出为独立仓 `../godot-game-template/`**（见下），本目录保留仅供就近使用与参考。 | 是 |
+| `../godot-game-template/` | **独立模板仓（在仓库之外）**——路径 `/mnt/d/Fox_n/!PROJECTS/#software/Projects/games/godot-game-template`，创建时 HEAD = `7ddbfb7`。跨项目复用的单一事实源，详见 `docs/PROJECT_TREE_TEMPLATE.md`。 | 否（独立仓） |
 | `.dsh-meow/` | AI 会话记忆库（`memory.db`） | **否**（已在 `.gitignore` 排除，误删不可恢复） |
 
 ## 五、目录结构速览
@@ -69,14 +70,14 @@ dummy-bird/                        # 项目根（Git 仓库根）
 │       ├── TEMPLATE.md
 │       └── YYYY-MM-DD.md
 ├── GAME/                          # Godot 工程（引擎目录）
-│   ├── project.godot
+│   ├── project.godot              # 渲染器 = gl_compatibility
 │   ├── assets/{sprite,audio}/     # 运行时素材
 │   ├── scenes/                    # 正式场景（主场景 = playground.tscn）
 │   ├── scripts/                   # GDScript
-│   ├── tools/                     # 引擎侧工具脚本（set_main_scene.gd）
-│   └── DEV/                       # 开发草稿区
-├── SOURCE/                         # 美术/音频源文件母版
-├── templates/godot-2d/            # 可复用工程骨架
+│   ├── tools/                     # 引擎侧工具（set_main_scene / set_renderer）
+│   └── DEV/                       # 开发草稿区（不加 .gdignore）
+├── SOURCE/                        # 美术/音频源文件母版
+├── templates/                     # 可复用工程骨架（工作副本；独立仓见 ../godot-game-template/）
 └── .dsh-meow/                     # AI 记忆库（不入库）
 ```
 
@@ -92,5 +93,6 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（3）：渲染器切 `Compatibility`；`SORCE/`→`SOURCE/`；模板抽出独立仓 `../godot-game-template/`；新增 `GAME/tools/set_renderer.gd`；文件树模板升 v0.2（T1–T5 全部已决）。
 - 2026-10-11（2）：补设主场景 `scenes/playground.tscn`；新增 `GAME/tools/set_main_scene.gd`；模板加入默认主场景 `Main.tscn`。
 - 2026-10-11：创建本文件（索引首版）；建立仓库与 Godot 工程目录规范。

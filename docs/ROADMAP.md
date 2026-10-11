@@ -47,6 +47,11 @@
 - **2026-10-11 修正目录拼写 `assest→assets`、`scense→scenes`、`script→scripts`** → 趁两个场景 `.tscn` 还没有任何 `res://` 交叉引用时改名，零风险；拼写错误的目录名会长期污染检索与肌肉记忆。
 - **2026-10-11 文件树模板以"仓库内文档 + 可复制骨架"形式沉淀** → Godot 官方 Project Manager 目前不支持自定义项目模板（见 [proposal #3388](https://github.com/godotengine/godot-proposals/issues/3388)、[discussion #11935](https://github.com/godotengine/godot-proposals/discussions/11935)），因此用「复制骨架」替代官方的"新建时选模板"。
 - **2026-10-11 模板必须自带默认主场景 `scenes/Main.tscn`** → 新建的 Godot 工程没有 `run/main_scene` 时，按 F5 会报 `Error: Can't run project: no main scene defined`。工程起盘期这是"第一个必踩的坑"，属于模板应当消除的摩擦，不该留给使用者。
+- **2026-10-11 渲染器 `Forward Plus` → `Compatibility`（用户拍板）** → 2D 游戏用 Compatibility：兼容性最好、包体更小、低端机友好；同步改 `config/features` 并清掉无用的 `d3d12` 驱动设置。改渲染器越晚越麻烦，故在 M1 前定。
+- **2026-10-11 `SORCE/` → `SOURCE/`（用户拍板"改名"）** → 与 `assest`/`scense`/`script` 同属拼写统一问题；趁无外部引用一次改净。
+- **2026-10-11 `DEV/` 不加 `.gdignore`（用户拍板"不要加"）** → 草稿区的价值就在于能在编辑器里直接运行验证；加了会被引擎跳过扫描、无法运行。
+- **2026-10-11 模板抽出独立仓 `../godot-game-template/`（用户拍板"单独抽出"）** → 模板是跨项目资产，与具体游戏解耦后才有单一事实源；用 `git subtree split` 把 `templates/` 的提交历史一并带过去，避免"复制一份没历史的目录"。
+- **2026-10-11 不做 EditorPlugin 生成目录（用户拍板"不要加"语境下默认）** → 插件必须先存在于工程内才能运行，绕不过"新建工程时尚无工程"的先有鸡还是先有蛋问题。
 - **2026-10-11 主场景用 `tools/set_main_scene.gd` 写入，而非手改 `project.godot`** → 走引擎的 `ProjectSettings.save()`，落盘格式与编辑器菜单设置完全一致（UID 引用等细节由引擎决定）；手写文本有格式漂移风险。
 
 ## 4. Bug 跟踪表

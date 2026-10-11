@@ -38,8 +38,9 @@
 | 项 | 值 |
 |---|---|
 | 引擎版本 | Godot 4.7.1 stable（`config/features = 4.7, Forward Plus`） |
-| 渲染器 | **Forward Plus** |
+| 渲染器 | **`gl_compatibility`（Compatibility）**，2026-10-11 由 Forward Plus 切换 |
 | 窗口拉伸 | `canvas_items` + `aspect=expand` |
+| 美术分辨率基线 | ⬜ 待定（见待决策 #3） |
 | 物理引擎 | 3D 侧 `Jolt Physics`（2D 项目无关） |
 | 主场景 | `scenes/playground.tscn`（2026-10-11 设置；起盘占位，正式开发时替换，用 `GAME/tools/set_main_scene.gd` 改） |
 
@@ -56,8 +57,8 @@
 
 | # | 决策项 | 背景 / 选项 | 状态 | 结论 |
 |---|---|---|---|---|
-| 1 | 渲染器是否改为 `Mobile`/`Compatibility` | 2D 像素游戏一般用 `Compatibility`（兼容性最好、包体小、低端机友好）；当前是 `Forward Plus`（3D 高端向）。改渲染器需在建工程早期定，越晚越麻烦 | ⬜ | |
-| 2 | 项目正式名称 | `DummyBird` 是占位名 | ⬜ | |
+| 1 | 渲染器是否改为 `Mobile`/`Compatibility` | 2D 像素游戏一般用 `Compatibility`（兼容性最好、包体小、低端机友好）；原为 `Forward Plus`（3D 高端向） | ✅ | **改 `Compatibility`**（`gl_compatibility`，已落实；用 `GAME/tools/set_renderer.gd` 可再切） |
+| 2 | 项目正式名称 | ~~`DummyBird` 是占位名~~ | ✅ | **就叫 DummyBird**（用户 2026-10-11 定，非占位） |
 | 3 | 美术分辨率基线 | 16×16 / 32×32 / 更高；影响相机缩放与素材规格 | ⬜ | |
 | 4 | `DEV/` 草稿区的保留策略 | 草稿场景何时晋升到 `scenes/`、何时删除 | ⬜ | |
 | 5 | 是否引入 `addons/` 第三方插件 | 参考项目用到了 `debug_system`、`TileMapDual` | ⬜ | |
