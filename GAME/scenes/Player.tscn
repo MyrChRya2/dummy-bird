@@ -1,10 +1,31 @@
 [gd_scene format=3 uid="uid://biycq5yemodc6"]
 
+[ext_resource type="Texture2D" uid="uid://dypri8tmq6g2f" path="res://assets/sprite/entity/player.png" id="1_p0vlq"]
+[ext_resource type="Script" uid="uid://bi5kqfd3payjt" path="res://scripts/Player.gd" id="1_v6fml"]
+[ext_resource type="Script" uid="uid://ds3a2hka881bb" path="res://scripts/jump.gd" id="3_3li8b"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_on746"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_p0vlq")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 5.0
+}]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_cs4y6"]
 
 [node name="Player" type="CharacterBody2D" unique_id=845206636]
+script = ExtResource("1_v6fml")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1646664804]
+[node name="PlayerAnim" type="AnimatedSprite2D" parent="." unique_id=1646664804]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_on746")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1931605243]
 shape = SubResource("CircleShape2D_cs4y6")
+
+[node name="Jump" type="Node" parent="." unique_id=1934515498]
+script = ExtResource("3_3li8b")
