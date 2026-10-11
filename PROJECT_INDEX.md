@@ -25,6 +25,7 @@
 | `docs/devlog/` | **开发日志目录** — 命名 `YYYY-MM-DD.md`（同日多篇加 `-b`/`-c` 后缀）。 |
 | `docs/devlog/TEMPLATE.md` | **日志模板** — 每日收尾生成日志的骨架与提问清单。 |
 | `docs/PROJECT_TREE_TEMPLATE.md` | **游戏文件树基础模板** — 目录分层约定、每层放什么、什么时候该拆；跨项目复用，持续迭代。 |
+| `docs/tech-art-log.md` | **技术美术实验日志** — 项目目的的落点（`GDD.md` §0）：按技法主题沉淀"想验证什么→怎么做→学到什么→可否复用"，**非按日期**。含待研究清单 T1–T10。 |
 
 ## 二、仓库级管理配置（项目根）
 
@@ -76,6 +77,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 │   ├── GDD.md                     # 设计文档
 │   ├── ROADMAP.md                 # 路线图
 │   ├── PROJECT_TREE_TEMPLATE.md   # 文件树模板（跨项目复用）
+│   ├── tech-art-log.md            # 技美实验日志（项目目的的落点）
 │   └── devlog/                    # 开发日志
 │       ├── TEMPLATE.md
 │       └── YYYY-MM-DD.md
@@ -104,6 +106,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（12）：**项目目的明确为「学习技术美术」** → GDD 新增 §0（含取舍原则与推进顺序）、§5.4 框架架构、§5.5 UI 清单；ROADMAP 新增 **M1.5 整套框架**与 **M4 技术美术研究**里程碑；新建 `docs/tech-art-log.md`。
 - 2026-10-11（11）：曲线参数定稿（游戏内调优）——`ObstacleCurve.tres`（half_range 65 / freq2 0.24 / noise_amp 0.46 / noise_step 0.72 / seed 46190）、spawner（speed 129、spacing 138）；新增 `tools/curve_tuner.gd` 游戏内调参面板；`curve_preview.gd` 增画中线与包络线；`playground.tscn` 直接指定 `.tres`。
 - 2026-10-11（10）：同步障碍物生成系统——新增 `GAME/resources/`（自定义 Resource 数据资产 `ObstacleCurve.tres`）、`tools/debug/curve_preview.gd`（曲线可视化）、`DEV/test_scenes/` 障碍原型；`playground.tscn` 接入 Spawner；`project.godot` 新增空动作 `click`（待绑定）。
 - 2026-10-11（9）：处理 4 项整理项——state.svg 保持原地（确认是自定义节点图标）、Eroor→Error 改名、SOURCE 保留组织并补 README、test_scence→test_scene；索引同步。
