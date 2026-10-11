@@ -47,11 +47,13 @@
 | `GAME/tools/set_renderer.gd` | 切换渲染器（gl / forward / mobile） |
 | `GAME/tools/set_pixel_perfect.gd` | **像素完美渲染地基**：Nearest 过滤 + 视口尺寸 + 拉伸方式 + 横屏，一条命令重置 |
 | `GAME/tools/setup_input_map.gd` | 注入 `flap` 输入动作（鼠标左键 / 空格 / 屏幕轻触） |
+| `GAME/tools/curve_preview.gd` | **曲线可视化工具**——把 `ObstacleCurve` 生成的通道高度画出来，便于调参（玩法侧工具） |
+| `GAME/resources/` | **自定义 Resource 实例**（数据资产）：`ObstacleCurve.tres`——障碍通道曲线的参数实例，可在检查器里调 |
 | `GAME/.editorconfig` `.gitattributes` `.gitignore` | 引擎目录内的编辑器/Git 局部约定 |
 | `GAME/assets/` | 运行时素材。现有 `sprite/entity/player.png`、`sprite/tile/tiles.png`、`sprite/error/Eroor.png`；目录约定 `sprite/{bg,entity,item,tile,error}`、`audio/{bgm,sfx}`、`font/`、`ui/` |
-| `GAME/scenes/` | 正式场景：`Player.tscn`（角色：CharacterBody2D + AnimatedSprite2D + CircleShape2D + Jump 子节点）、`playground.tscn`（**当前主场景**，已实例化 Player） |
+| `GAME/scenes/` | 正式场景：`Player.tscn`（角色：CharacterBody2D + AnimatedSprite2D + CircleShape2D + Jump 子节点）、`playground.tscn`（**当前主场景**：Player + ObstacleSpawner + CurvePreview） |
 | `GAME/scripts/` | GDScript：`Player.gd`、`jump.gd`、`00_movement.gd`；`state.svg` 是作者自定义的**节点图标**（由 `@icon("res://scripts/state.svg")` 引用，勿移动） |
-| `GAME/DEV/` | **开发草稿区**——现为 `test_scenes/{obstacle,test_scence}.tscn`，不作正式资产；稳定后再移入 `scenes/` |
+| `GAME/DEV/test_scenes/` | **开发草稿区**——障碍物生成系统的原型：`obstacle.gd`（左移+出界回收）、`obstacle_half.tscn`、`obstacle.tscn`、`obstacle_curve.gd`（`class_name ObstacleCurve`：双正弦+噪声的通道曲线）、`obstacle_spawner.gd`、`test_scene.tscn`、`test_scence.tscn`。稳定后应移入 `scripts/`、`scenes/` |
 
 ## 四、仓库外配合目录
 
@@ -99,6 +101,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（10）：同步障碍物生成系统——新增 `GAME/resources/`（自定义 Resource 数据资产 `ObstacleCurve.tres`）、`tools/curve_preview.gd`（曲线可视化）、`DEV/test_scenes/` 障碍原型；`playground.tscn` 接入 Spawner；`project.godot` 新增空动作 `click`（待绑定）。
 - 2026-10-11（9）：处理 4 项整理项——state.svg 保持原地（确认是自定义节点图标）、Eroor→Error 改名、SOURCE 保留组织并补 README、test_scence→test_scene；索引同步。
 - 2026-10-11（8）：同步开发进展——`scenes/`（Player/playground）、`scripts/`（Player/jump/00_movement）、`assets/sprite/{entity,tile,error}`、`DEV/test_scenes/`、`SOURCE/Resprite/`（美术源文件母版）；并登记 4 项待整理。
 - 2026-10-11（7）：新增 `GAME/tools/{set_pixel_perfect,setup_input_map}.gd`；定义 `flap` 输入动作（鼠标左键/空格/屏幕轻触）；修正 `.gitignore` 误忽略 `export_presets.cfg`，纳入 `*.uid`，补签名密钥忽略；模板仓同步修正。
@@ -119,6 +122,17 @@ dummy-bird/                        # 项目根（Git 仓库根）
 | 4 | `DEV/test_scenes/test_scence.tscn` 拼写 | 「**修成拼写**」 | 已改为 `test_scene.tscn`，根节点名 `TestScence` → `TestScene`；该场景**零外部引用**，改动安全 |
 
 > 执行方式说明：本次改动经**引用检查**确认无风险后才动手（`Eroor` 只被自身 `.import` 引用；`test_scence` 零外部引用）。按 Godot 的规矩，**移动有引用的文件应在编辑器里拖拽**；本次是"零引用的改名"，且已用 `--headless --editor` 重新扫描验证通过。
+
+## 七之三、待整理（2026-10-11 新一轮）
+
+| # | 事项 | 说明 |
+|---|---|---|
+| 1 | `DEV/test_scenes/test_scence.tscn` 拼写又出现 `scence` | 与已修正的 `test_scene.tscn`（正确拼写）**是两个不同内容的场景**，不重复：`test_scene.tscn` 是旧版（Player + obstacle_half），`test_scence.tscn` 是新版（ObstacleSpawner + CurvePreview）。建议把新版改成正确拼写，旧版删除或明确保留理由 |
+| 2 | `project.godot` 的 `click` 动作 `events` **为空** | 空绑定动作不会响应当前任何输入（不影响 `flap`）。若非有意留待绑定，建议补上事件或在项目设置里删掉 |
+| 3 | 障碍原型全部位于 `DEV/test_scenes/`，但被 `playground.tscn`（主场景）引用 | DEV 是草稿区，被正式场景引用意味着它已"事实晋升"。待玩法稳定后建议整体移入 `scripts/` + `scenes/`（**须在编辑器里移动**以保引用） |
+| 4 | `tools/curve_preview.gd` 是**玩法侧**工具（145 行），与 `tools/` 里另外 4 个"工程设置工具"性质不同 | 两种都可放 `tools/`。若想区分，可把工程设置工具归入 `tools/engine/`、玩法工具归入 `tools/game/` |
+
+> 均为建议，非阻断项。
 
 ## 八、许可与第三方内容
 
