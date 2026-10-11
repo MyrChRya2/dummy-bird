@@ -11,6 +11,7 @@
 | `Resprite/Player.resprite` | `GAME/assets/sprite/entity/player.png` | 16×16 |
 | `Resprite/Error.resprite` | `GAME/assets/sprite/error/Error.png` | 32×16 |
 | `Resprite/Tiles.resprite` | `GAME/assets/sprite/tile/tiles.png` | 16×16 |
+| `Resprite/manu.resprite` | **⬜ 尚未导出**（新增源文件，2026-10-11） | 待定 |
 
 ## 目录组织说明
 
