@@ -48,16 +48,16 @@
 | `GAME/tools/set_pixel_perfect.gd` | **像素完美渲染地基**：Nearest 过滤 + 视口尺寸 + 拉伸方式 + 横屏，一条命令重置 |
 | `GAME/tools/setup_input_map.gd` | 注入 `flap` 输入动作（鼠标左键 / 空格 / 屏幕轻触） |
 | `GAME/.editorconfig` `.gitattributes` `.gitignore` | 引擎目录内的编辑器/Git 局部约定 |
-| `GAME/assets/` | 运行时素材（`sprite/{bg,entity,item,tile}`、`audio/`） |
-| `GAME/scenes/` | 正式场景（`.tscn`）。当前主场景 = `scenes/playground.tscn` |
-| `GAME/scripts/` | GDScript 脚本（当前为空） |
-| `GAME/DEV/` | **开发草稿区**——原型场景/试验脚本，不作正式资产；稳定后再移入 `scenes/`、`scripts/` |
+| `GAME/assets/` | 运行时素材。现有 `sprite/entity/player.png`、`sprite/tile/tiles.png`、`sprite/error/Eroor.png`；目录约定 `sprite/{bg,entity,item,tile,error}`、`audio/{bgm,sfx}`、`font/`、`ui/` |
+| `GAME/scenes/` | 正式场景：`Player.tscn`（角色：CharacterBody2D + AnimatedSprite2D + CircleShape2D + Jump 子节点）、`playground.tscn`（**当前主场景**，已实例化 Player） |
+| `GAME/scripts/` | GDScript：`Player.gd`、`jump.gd`、`00_movement.gd`（另有 `state.svg`，见「七之二」待整理） |
+| `GAME/DEV/` | **开发草稿区**——现为 `test_scenes/{obstacle,test_scence}.tscn`，不作正式资产；稳定后再移入 `scenes/` |
 
 ## 四、仓库外配合目录
 
 | 路径 | 作用 | 是否入 Git |
 |------|------|-----------|
-| `SOURCE/` | **美术/音频源文件**（`.aseprite` / `.psd` / `.kra` / `.blend`）。可编辑母版放这里，导出成品进 `GAME/assets/`。 | 是（**必须入库**，源文件无版本控制=无备份） |
+| `SOURCE/Resprite/` | **美术源文件母版**（Resprite 工程 `.resprite` + 导出 PNG）。**实测确认**：这些 PNG 内**无内嵌工程数据**（tEXt/iTXt/zTXt 块全空），故 `.resprite` 是唯一可编辑母版，丢了无法复原——**必须入库**。 | 是（**必须入库**） |
 | `../godot-game-template/` | **独立模板仓（不在本仓库内，模板的单一事实源）**——路径 `/mnt/d/Fox_n/!PROJECTS/#software/Projects/games/godot-game-template`。可复用骨架 + `new-game.sh` 生成脚本。**新项目都从这里起盘**。详见 `docs/PROJECT_TREE_TEMPLATE.md`。 | 否（独立仓） |
 | `.dsh-meow/` | AI 会话记忆库（`memory.db`） | **否**（已在 `.gitignore` 排除，误删不可恢复） |
 
@@ -99,6 +99,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（8）：同步开发进展——`scenes/`（Player/playground）、`scripts/`（Player/jump/00_movement）、`assets/sprite/{entity,tile,error}`、`DEV/test_scenes/`、`SOURCE/Resprite/`（美术源文件母版）；并登记 4 项待整理。
 - 2026-10-11（7）：新增 `GAME/tools/{set_pixel_perfect,setup_input_map}.gd`；定义 `flap` 输入动作（鼠标左键/空格/屏幕轻触）；修正 `.gitignore` 误忽略 `export_presets.cfg`，纳入 `*.uid`，补签名密钥忽略；模板仓同步修正。
 - 2026-10-11（6）：推送为 GitHub 公开仓 `MyrChRya2/dummy-bird`（MIT）；M0 基建里程碑完成。
 - 2026-10-11（5）：确定开源许可 **MIT**；新增根目录 `LICENSE`；登记 `GAME/icon.svg` 为 Godot 官方默认图标（第三方内容）。
@@ -106,6 +107,17 @@ dummy-bird/                        # 项目根（Git 仓库根）
 - 2026-10-11（3）：渲染器切 `Compatibility`；`SORCE/`→`SOURCE/`；模板抽出独立仓 `../godot-game-template/`；新增 `GAME/tools/set_renderer.gd`；文件树模板升 v0.2（T1–T5 全部已决）。
 - 2026-10-11（2）：补设主场景 `scenes/playground.tscn`；新增 `GAME/tools/set_main_scene.gd`；模板加入默认主场景 `Main.tscn`。
 - 2026-10-11：创建本文件（索引首版）；建立仓库与 Godot 工程目录规范。
+
+## 七之二、待整理（发现的问题，尚未处理）
+
+| # | 问题 | 建议 |
+|---|---|---|
+| 1 | `GAME/scripts/state.svg` 是图片却放在 `scripts/` 里（连 `.import` 一起） | 移到 `GAME/assets/ui/` 或 `assets/sprite/`；若它是脚本目录的说明图，改放 `docs/`。**Godot 只认 `res://` 路径，移动须在编辑器里拖拽** |
+| 2 | `sprite/error/Eroor.png` 拼写 `Eroor` → `Error` | 统一拼写（趁引用还少）；改名同样要在编辑器里做 |
+| 3 | `SOURCE/Resprite/` 与 `GAME/assets/sprite/` 不同构（按"工具/项目名"分层，而非按用途） | 两种都行。若保持现状，建议在 `SOURCE/` 放一份 `README.md` 说明"哪个源文件导出到哪个运行时路径"，避免以后对不上 |
+| 4 | `DEV/test_scenes/test_scence.tscn` 拼写 `scence` → `scene` | 与早先的 `scense` 是同一类问题，建议顺手改 |
+
+> 以上均为**建议**，不是阻断项；等你决定即可，需要我改就安排。
 
 ## 八、许可与第三方内容
 
