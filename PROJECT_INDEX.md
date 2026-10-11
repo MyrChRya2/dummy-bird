@@ -33,6 +33,7 @@
 | `.gitattributes` | Git 属性（换行符统一 `eol=lf`） |
 | `.editorconfig` | 编辑器统一配置（UTF-8） |
 | `PROJECT_INDEX.md` | 本文件 — 索引与 skill 配置入口 |
+| `LICENSE` | **MIT**——本项目以 MIT 许可开源 |
 
 ## 三、工程内配置（`GAME/`）
 
@@ -93,7 +94,17 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（5）：确定开源许可 **MIT**；新增根目录 `LICENSE`；登记 `GAME/icon.svg` 为 Godot 官方默认图标（第三方内容）。
 - 2026-10-11（4）：删除本仓 `templates/` 副本（用户拍板）——模板只保留独立仓 `../godot-game-template/`，消除双副本漂移；本仓起盘入口改为指向独立仓。
 - 2026-10-11（3）：渲染器切 `Compatibility`；`SORCE/`→`SOURCE/`；模板抽出独立仓 `../godot-game-template/`；新增 `GAME/tools/set_renderer.gd`；文件树模板升 v0.2（T1–T5 全部已决）。
 - 2026-10-11（2）：补设主场景 `scenes/playground.tscn`；新增 `GAME/tools/set_main_scene.gd`；模板加入默认主场景 `Main.tscn`。
 - 2026-10-11：创建本文件（索引首版）；建立仓库与 Godot 工程目录规范。
+
+## 八、许可与第三方内容
+
+| 项 | 说明 |
+|---|---|
+| 本项目代码与文档 | **MIT License**（见根目录 `LICENSE`），Copyright (c) 2026 MyrChRya2 |
+| `GAME/icon.svg` | **不是本项目原创**——来自 Godot 引擎自带的默认工程图标模板，版权归 Godot Engine 贡献者所有，按 MIT 许可使用（Godot Engine 亦为 MIT）。日后替换为原创图标时，请删除本行说明 |
+| 未来新增的美术/音频 | 若要与代码采用不同许可（例如素材用 CC0 而代码保持 MIT），在本表登记并在 `SOURCE/`、`GAME/assets/` 下放置对应说明 |
+| Godot 引擎本身 | MIT；**用 Godot 制作和分发游戏不产生任何开源义务**，可闭源商用 |
