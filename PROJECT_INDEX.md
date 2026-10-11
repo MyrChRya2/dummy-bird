@@ -47,7 +47,8 @@
 | `GAME/tools/set_renderer.gd` | 切换渲染器（gl / forward / mobile） |
 | `GAME/tools/set_pixel_perfect.gd` | **像素完美渲染地基**：Nearest 过滤 + 视口尺寸 + 拉伸方式 + 横屏，一条命令重置 |
 | `GAME/tools/setup_input_map.gd` | 注入 `flap` 输入动作（鼠标左键 / 空格 / 屏幕轻触） |
-| `GAME/tools/curve_preview.gd` | **曲线可视化工具**——把 `ObstacleCurve` 生成的通道高度画出来，便于调参（玩法侧工具） |
+| `GAME/tools/curve_preview.gd` | **曲线可视化工具**——画出 `ObstacleCurve` 的通道高度点带，并标注 `center_y` 中线与 `center_y ± half_range` 包络线（玩法侧调试件） |
+| `GAME/tools/curve_tuner.gd` | **游戏内实时调参面板**（玩法侧调试件）——滑杆读写 `ObstacleCurve` 导出属性 + spawner 的 `spacing`/`speed`；**F1 显隐、F2 打印当前参数**；带"相邻落差"统计。只读写参数、不改游戏逻辑，可安全删除 |
 | `GAME/resources/` | **自定义 Resource 实例**（数据资产）：`ObstacleCurve.tres`——障碍通道曲线的参数实例，可在检查器里调 |
 | `GAME/.editorconfig` `.gitattributes` `.gitignore` | 引擎目录内的编辑器/Git 局部约定 |
 | `GAME/assets/` | 运行时素材。现有 `sprite/entity/player.png`、`sprite/tile/tiles.png`、`sprite/error/Eroor.png`；目录约定 `sprite/{bg,entity,item,tile,error}`、`audio/{bgm,sfx}`、`font/`、`ui/` |
@@ -101,6 +102,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-11（11）：曲线参数定稿（游戏内调优）——`ObstacleCurve.tres`（half_range 65 / freq2 0.24 / noise_amp 0.46 / noise_step 0.72 / seed 46190）、spawner（speed 129、spacing 138）；新增 `tools/curve_tuner.gd` 游戏内调参面板；`curve_preview.gd` 增画中线与包络线；`playground.tscn` 直接指定 `.tres`。
 - 2026-10-11（10）：同步障碍物生成系统——新增 `GAME/resources/`（自定义 Resource 数据资产 `ObstacleCurve.tres`）、`tools/curve_preview.gd`（曲线可视化）、`DEV/test_scenes/` 障碍原型；`playground.tscn` 接入 Spawner；`project.godot` 新增空动作 `click`（待绑定）。
 - 2026-10-11（9）：处理 4 项整理项——state.svg 保持原地（确认是自定义节点图标）、Eroor→Error 改名、SOURCE 保留组织并补 README、test_scence→test_scene；索引同步。
 - 2026-10-11（8）：同步开发进展——`scenes/`（Player/playground）、`scripts/`（Player/jump/00_movement）、`assets/sprite/{entity,tile,error}`、`DEV/test_scenes/`、`SOURCE/Resprite/`（美术源文件母版）；并登记 4 项待整理。
