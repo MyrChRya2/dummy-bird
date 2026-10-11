@@ -110,7 +110,7 @@ GAME/
 设置方式二选一：
 
 - **编辑器**：Project → Project Settings → Application → Run → Main Scene
-- **命令行**：`godot --headless --path <GAME 目录> --script res://tools/set_main_scene.gd -- res://scenes/MyScene.tscn`
+- **命令行**：`godot --headless --path <GAME 目录> --script res://tools/engine/set_main_scene.gd -- res://scenes/MyScene.tscn`
 
 ⚠️ **不要手改 `project.godot` 文本去写 UID**：Godot 的 UID 是 `0-9a-v` 编码，编造的 UID 可能非法。走引擎的 `ProjectSettings.save()`（即上面两种方式）让引擎自己决定格式——它会写成 `run/main_scene="uid://xxxxx"`。
 

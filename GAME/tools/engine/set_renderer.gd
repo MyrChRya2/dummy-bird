@@ -4,7 +4,7 @@ extends SceneTree
 ## 等价于编辑器菜单 Project → Project Settings → Rendering → Renderer → Rendering Method
 ##
 ## 用法：
-##   godot --headless --path <工程目录> --script res://tools/set_renderer.gd -- gl
+##   godot --headless --path <工程目录> --script res://tools/engine/set_renderer.gd -- gl
 ##   （gl = Compatibility 2D/低端友好 | forward = Forward+ 3D 高端 | mobile = Mobile）
 
 const METHODS := {

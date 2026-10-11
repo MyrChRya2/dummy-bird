@@ -4,7 +4,7 @@ extends SceneTree
 ## 等价于编辑器菜单 Project → Project Settings → Application → Run → Main Scene
 ##
 ## 用法（不传参时用下方 DEFAULT_MAIN_SCENE）：
-##   godot --headless --path <工程目录> --script res://tools/set_main_scene.gd -- res://scenes/MyScene.tscn
+##   godot --headless --path <工程目录> --script res://tools/engine/set_main_scene.gd -- res://scenes/MyScene.tscn
 ##
 ## 为什么要用它：工程没有 run/main_scene 时，编辑器里按 F5 会弹
 ## 「Error: Can't run project: no main scene defined in the project.」

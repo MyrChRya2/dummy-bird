@@ -144,7 +144,7 @@
 | 纹理过滤 | **Nearest（`default_texture_filter=0`，2026-10-11 已设置）**；原为 Linear 会让像素画发糊 |
 | 美术分辨率基线 | ⬜ 待定（见待决策 #3） |
 | 物理引擎 | 3D 侧 `Jolt Physics`（2D 项目无关） |
-| 主场景 | `scenes/playground.tscn`（2026-10-11 设置；起盘占位，正式开发时替换，用 `GAME/tools/set_main_scene.gd` 改） |
+| 主场景 | `scenes/playground.tscn`（2026-10-11 设置；起盘占位，正式开发时替换，用 `GAME/tools/engine/set_main_scene.gd` 改） |
 
 ### 5.2 待定架构项
 
@@ -159,7 +159,7 @@
 
 | # | 项 | 说明 | 状态 |
 |---|---|---|---|
-| **P1** | **像素完美渲染** | ✅ **已完成**。`textures/canvas_textures/default_texture_filter=0`（**0 = Nearest**）。枚举权威定义由引擎给出：`hint_string = "Nearest,Linear,Linear Mipmap,Nearest Mipmap"`、默认 1 → 0=Nearest,1=Linear,2=Linear Mipmap,3=Nearest Mipmap。<br>⚠️ 易踩坑：`CanvasItem.TEXTURE_FILTER_*` 是**另一套**枚举（0=PARENT_NODE,1=NEAREST,2=LINEAR），两者不能混用比对。工具：`GAME/tools/set_pixel_perfect.gd` | ✅ 2026-10-11 |
+| **P1** | **像素完美渲染** | ✅ **已完成**。`textures/canvas_textures/default_texture_filter=0`（**0 = Nearest**）。枚举权威定义由引擎给出：`hint_string = "Nearest,Linear,Linear Mipmap,Nearest Mipmap"`、默认 1 → 0=Nearest,1=Linear,2=Linear Mipmap,3=Nearest Mipmap。<br>⚠️ 易踩坑：`CanvasItem.TEXTURE_FILTER_*` 是**另一套**枚举（0=PARENT_NODE,1=NEAREST,2=LINEAR），两者不能混用比对。工具：`GAME/tools/engine/set_pixel_perfect.gd` | ✅ 2026-10-11 |
 | **P2** | **窗口拉伸方式** | ✅ **已完成**：`canvas_items` + `expand` + `integer`。选型依据（实测）：`expand` 会按需扩展视口短轴（800×450 窗口下视口变 320×**320**），因此**不会产生黑边**，适合横屏多机型；`integer` 保证整数倍缩放、像素均匀。若某机型出现黑边或抖动，把 `scale_mode` 改回 `fractional`、或换 `viewport` 模式即可（两者都是单行改动） | ✅ 2026-10-11 |
 | **P3** | **屏幕方向与窗口尺寸** | ✅ **已完成**：**横屏** + 基础视口 **320×180**（16:9，1080p 的整数倍）。`handheld/orientation=1` | ✅ 2026-10-11 |
 | **P4** | **Web 导出预设** | 目标 itch.io。⚠️ **itch.io 托管需用「单线程」Web 导出**——itch.io 不发送 COOP/COEP 响应头，而 Godot 的多线程 Web 导出依赖 `SharedArrayBuffer`，会加载失败；官方文档明确建议面向 itch.io 时关闭线程支持。横屏 16:9 在网页里也更贴合常规显示比例 | ⬜ 待配置 |
@@ -175,7 +175,7 @@
 
 | # | 决策项 | 背景 / 选项 | 状态 | 结论 |
 |---|---|---|---|---|
-| 1 | 渲染器是否改为 `Mobile`/`Compatibility` | 2D 像素游戏一般用 `Compatibility`（兼容性最好、包体小、低端机友好）；原为 `Forward Plus`（3D 高端向） | ✅ | **改 `Compatibility`**（`gl_compatibility`，已落实；用 `GAME/tools/set_renderer.gd` 可再切） |
+| 1 | 渲染器是否改为 `Mobile`/`Compatibility` | 2D 像素游戏一般用 `Compatibility`（兼容性最好、包体小、低端机友好）；原为 `Forward Plus`（3D 高端向） | ✅ | **改 `Compatibility`**（`gl_compatibility`，已落实；用 `GAME/tools/engine/set_renderer.gd` 可再切） |
 | 2 | 项目正式名称 | ~~`DummyBird` 是占位名~~ | ✅ | **就叫 DummyBird**（用户 2026-10-11 定，非占位） |
 | 3 | 美术分辨率基线 | 16×16 / 32×32 / 更高；影响相机缩放与素材规格 | ⬜ | |
 | 4 | `DEV/` 草稿区的保留策略 | 草稿场景何时晋升到 `scenes/`、何时删除 | ⬜ | |

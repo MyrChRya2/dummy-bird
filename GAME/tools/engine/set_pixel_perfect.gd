@@ -4,8 +4,8 @@ extends SceneTree
 ## 对应编辑器菜单 Project → Project Settings → 下的 Rendering/Textures 与 Display/Window
 ##
 ## 用法（不传参用下方默认值）：
-##   godot --headless --path <工程目录> --script res://tools/set_pixel_perfect.gd
-##   godot --headless --path <工程目录> --script res://tools/set_pixel_perfect.gd -- 320 180
+##   godot --headless --path <工程目录> --script res://tools/engine/set_pixel_perfect.gd
+##   godot --headless --path <工程目录> --script res://tools/engine/set_pixel_perfect.gd -- 320 180
 ##
 ## ⚠️ 枚举取值（引擎权威定义，勿与 CanvasItem 的枚举混淆）：
 ##   本设置 hint_string = "Nearest,Linear,Linear Mipmap,Nearest Mipmap"，默认 1

@@ -1,7 +1,7 @@
 extends Node2D
 
 
-const OBSTACLE := preload("res://DEV/test_scenes/obstacle.tscn")
+const OBSTACLE := preload("res://scenes/obstacle/obstacle.tscn")
 
 @export var curve: ObstacleCurve
 var _n := 0

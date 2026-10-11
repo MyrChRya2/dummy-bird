@@ -4,8 +4,8 @@ extends SceneTree
 ## 对应编辑器菜单 Project → Project Settings → Input Map
 ##
 ## 用法：
-##   godot --headless --path <工程目录> --script res://tools/setup_input_map.gd
-##   godot --headless --path <工程目录> --script res://tools/setup_input_map.gd -- flap jump
+##   godot --headless --path <工程目录> --script res://tools/engine/setup_input_map.gd
+##   godot --headless --path <工程目录> --script res://tools/engine/setup_input_map.gd -- flap jump
 ##
 ## 为什么要有这个工具：
 ##   · 手写 project.godot 里 [input] 段的 InputEvent 序列化格式（Object(...)）极易出错

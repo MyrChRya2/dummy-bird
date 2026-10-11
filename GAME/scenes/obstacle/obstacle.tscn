@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://chkjsng6pv2a7"]
 
-[ext_resource type="PackedScene" uid="uid://d1vjt3fv43chs" path="res://DEV/test_scenes/obstacle_half.tscn" id="1_go0x7"]
-[ext_resource type="Script" uid="uid://b1njxbbyjhqr7" path="res://DEV/test_scenes/obstacle.gd" id="2_6yqmv"]
+[ext_resource type="PackedScene" uid="uid://d1vjt3fv43chs" path="res://scenes/obstacle/half.tscn" id="1_go0x7"]
+[ext_resource type="Script" uid="uid://b1njxbbyjhqr7" path="res://scripts/obstacle/obstacle.gd" id="2_6yqmv"]
 
 [node name="Obstacle2" type="Node2D" unique_id=1346603064]
 script = ExtResource("2_6yqmv")
