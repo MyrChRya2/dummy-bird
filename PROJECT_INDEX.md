@@ -51,7 +51,7 @@
 
 | 路径 | 作用 | 是否入 Git |
 |------|------|-----------|
-| `SORCE/` | **美术/音频源文件**（`.aseprite` / `.psd` / `.kra` / `.blend`）。可编辑母版放这里，导出成品进 `GAME/assets/`。 | 是（**必须入库**，源文件无版本控制=无备份） |
+| `SOURCE/` | **美术/音频源文件**（`.aseprite` / `.psd` / `.kra` / `.blend`）。可编辑母版放这里，导出成品进 `GAME/assets/`。 | 是（**必须入库**，源文件无版本控制=无备份） |
 | `templates/godot-2d/` | **可复用工程骨架**——新项目直接复制，详见 `docs/PROJECT_TREE_TEMPLATE.md`。 | 是 |
 | `.dsh-meow/` | AI 会话记忆库（`memory.db`） | **否**（已在 `.gitignore` 排除，误删不可恢复） |
 
@@ -75,7 +75,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 │   ├── scripts/                   # GDScript
 │   ├── tools/                     # 引擎侧工具脚本（set_main_scene.gd）
 │   └── DEV/                       # 开发草稿区
-├── SORCE/                         # 美术/音频源文件母版
+├── SOURCE/                         # 美术/音频源文件母版
 ├── templates/godot-2d/            # 可复用工程骨架
 └── .dsh-meow/                     # AI 记忆库（不入库）
 ```

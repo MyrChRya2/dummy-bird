@@ -28,7 +28,7 @@
 ### 已定的素材目录约定（工程侧，已有）
 
 - 运行时素材：`GAME/assets/sprite/{bg,entity,item,tile}`、`GAME/assets/audio/`
-- 可编辑源文件母版：`SORCE/`（`.aseprite` / `.psd` / `.kra`，**必须入库**）
+- 可编辑源文件母版：`SOURCE/`（`.aseprite` / `.psd` / `.kra`，**必须入库**）
 - 素材分辨率基线：⬜ 待定（建议尽早锁定，如 16×16 / 32×32，像素风取整数缩放）
 
 ## 5. 技术架构
