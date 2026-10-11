@@ -152,9 +152,12 @@ docs/
 ### 方式 A：复制骨架（推荐，当前可用）
 
 ```bash
-cd /path/to/templates
+cd /mnt/d/Fox_n/!PROJECTS/#software/Projects/games/godot-game-template   # ← 独立模板仓（单一事实源）
 ./new-game.sh my-new-game            # 生成 ./my-new-game 并完成 git init + 首次提交
 ```
+
+> 模板已抽出为**独立仓**，不在本仓库内：`../godot-game-template/`（用 `git subtree split` 从本项目带出完整提交历史）。
+> 本项目不再保留副本——**双副本必然漂移**（2026-10-11 实际发生过一次）。
 
 脚本做的事：复制骨架 → 替换 `project.godot` 里的工程名 → `git init -b main` → 首次提交。
 生成后：
