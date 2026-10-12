@@ -1,6 +1,6 @@
 # 📁 DummyBird 项目管理文件索引
 
-> 整理日期：2026-10-11 | 适用仓库版本：`main @ f9fa071`
+> 整理日期：2026-10-12 | 适用仓库版本：`main @ 1aa1efa`
 > 本文件列出项目中与项目管理相关的全部文件及其作用，方便快速定位。
 > **本文件也是 project-management skill 的项目配置入口**：路径约定、工作流规则都从这里读取。
 
@@ -12,9 +12,9 @@
 | 仓库根 | `/mnt/d/Fox_n/!PROJECTS/#software/Projects/games/dummy-bird` |
 | 远端仓库 | **公开** · `git@github.com:MyrChRya2/dummy-bird.git`（MIT） |
 | 引擎 | Godot **4.7.1** stable（`D:\Fox_n\!PROJECTS\#software\Engines\Godot_v4.7.1-stable_win64.exe`） |
-| 目标平台 | 待定（桌面优先） |
-| 渲染器 | `Forward Plus`（非 2D 精灵游戏的常规选择，见「待决策 #1」） |
-| 当前里程碑 | M0 工程基建（进行中） |
+| 目标平台 | **网页 itch.io + 移动 TapTap**（双端；桌面用于开发验证） |
+| 渲染器 | `Compatibility`（`gl_compatibility`）——2D 像素游戏的选择，见「待决策 #1」（已定，2026-10-11） |
+| 当前里程碑 | **M1.5 整套框架（基本完成）→ M1 核心玩法原型收尾** |
 
 ## 一、核心管理文档（`docs/`，已纳入 Git 版本控制）
 
@@ -47,13 +47,13 @@
 | `GAME/tools/engine/set_main_scene.gd` | 设置主场景（等同 Project Settings → Application → Run → Main Scene） |
 | `GAME/tools/engine/set_renderer.gd` | 切换渲染器（gl / forward / mobile） |
 | `GAME/tools/engine/set_pixel_perfect.gd` | **像素完美渲染地基**：Nearest 过滤 + 视口尺寸 + 拉伸方式 + 横屏，一条命令重置 |
-| `GAME/tools/engine/setup_input_map.gd` | 注入 `flap` 输入动作（鼠标左键 / 空格 / 屏幕轻触） |
+| `GAME/tools/engine/setup_input_map.gd` | 注入 `flap` 输入动作（鼠标左键 / 屏幕轻触；**2026-10-12 起不绑空格**——用户「这个游戏不需要点空格」） |
 | `GAME/tools/debug/` | **玩法调试件**（本作专属，**发布前应整体删除**） |
 | `GAME/tools/debug/curve_preview.gd` | 曲线可视化——画出 `ObstacleCurve` 的通道高度点带，并标注 `center_y` 中线与 `center_y ± half_range` 包络线 |
 | `GAME/tools/debug/curve_tuner.gd` | 游戏内实时调参面板——滑杆读写 `ObstacleCurve` 导出属性 + spawner 的 `spacing`/`speed`；**F1 显隐、F2 打印当前参数**；带"相邻落差"统计。只读写参数、不改游戏逻辑 |
 | `GAME/resources/` | 数据资产：`ObstacleCurve.tres`（障碍通道曲线参数实例）+ `ui/menu_theme.tres`（**Theme 资源**——`Button/font_sizes/font_size = 5`，多个控件共享样式靠它，不用逐节点 `theme_override_*`） |
 | `GAME/.editorconfig` `.gitattributes` `.gitignore` | 引擎目录内的编辑器/Git 局部约定 |
-| `GAME/assets/` | 运行时素材。现有 `sprite/entity/player.png`、`sprite/tile/tiles.png`、`sprite/error/Eroor.png`；目录约定 `sprite/{bg,entity,item,tile,error}`、`audio/{bgm,sfx}`、`font/`、`ui/` |
+| `GAME/assets/` | 运行时素材。现有 `sprite/entity/player.png`、`sprite/tile/tiles.png`、`sprite/error/Error.png`；目录约定 `sprite/{bg,entity,item,tile,error}`、`audio/{bgm,sfx}`、`font/`、`ui/` |
 | `GAME/scenes/main.tscn` | **当前主场景**（框架入口）：`Main`(Node2D) → `UILayer`(CanvasLayer) 下并列挂 `StartMenu`/`PauseMenu`/`HUD`/`FailedManu`/`SettingsPanel`；脚本 `scripts/main.gd` |
 | `GAME/scenes/` 其余 | 正式场景：`Player.tscn`（角色）、`playground.tscn`（游戏世界：Player + ObstacleSpawner + KillZone + 调试节点）、`obstacle/obstacle.tscn`（障碍复合体）、`obstacle/half.tscn`（纯几何 half）、`failed_manu.tscn`（失败界面——**文件名疑为 `menu` 的笔误**） |
 | `GAME/scenes/ui/` | UI 界面场景：`start_menu.tscn` / `pause_menu.tscn` / `hud.tscn` / `settings_panel.tscn` |
@@ -87,8 +87,8 @@ dummy-bird/                        # 项目根（Git 仓库根）
 ├── GAME/                          # Godot 工程（引擎目录）
 │   ├── project.godot              # 渲染器 = gl_compatibility
 │   ├── assets/{sprite,audio}/     # 运行时素材
-│   ├── scenes/                    # 正式场景（主场景 = playground.tscn）
-│   ├── scripts/                   # GDScript
+│   ├── scenes/                    # 正式场景（主场景 = main.tscn；scenes/ui/ = 五个界面）
+│   ├── scripts/                   # GDScript（main.gd / 00_game_state.gd + ui/ world/ obstacle/）
 │   ├── tools/                     # 引擎侧工具（set_main_scene / set_renderer）
 │   └── DEV/                       # 开发草稿区（不加 .gdignore）
 ├── SOURCE/                        # 美术/音频源文件母版
@@ -109,6 +109,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-12（14）：**补齐 ROADMAP 状态 + 清掉复发的僵尸场景**——ROADMAP：M1.5 标"基本完成"（2.5.1–2.5.7 落地、2.5.8 待真机）、2.5.6 说明 Esc 走内置 `ui_cancel`、2.5.4 的"退出"平台显隐标为已实测、M1 的 1.4/1.5 标部分完成（掉出→失败已通、**撞障碍与分数未做**）、补 6 条 2026-10-12 决策、启用 Bug 跟踪表（2 条已修复）、§6 补导出环境依赖；本索引：更正渲染器/目标平台/当前里程碑、`Eroor.png`→`Error.png`、目录速览主场景、`setup_input_map` 注明不再绑空格；`DEV/test_scenes/` 下复发的 3 个僵尸场景已清（零引用），新增 `docs/devlog/2026-10-12.md`。
 - 2026-10-12（13）：**整套 UI/场景框架落地**——主场景切到 `scenes/main.tscn`（Main → UILayer + 五个界面）；`GameState` 状态机 Autoload 注册；新增 `scenes/ui/`（start_menu/pause_menu/hud/settings_panel）、`failed_manu.tscn`、`resources/ui/menu_theme.tres`（共享 Theme）、`scripts/world/kill_zone.gd`；playground 改接 KillZone。
 - 2026-10-11（12）：**项目目的明确为「学习技术美术」** → GDD 新增 §0（含取舍原则与推进顺序）、§5.4 框架架构、§5.5 UI 清单；ROADMAP 新增 **M1.5 整套框架**与 **M4 技术美术研究**里程碑；新建 `docs/tech-art-log.md`。
 - 2026-10-11（11）：曲线参数定稿（游戏内调优）——`ObstacleCurve.tres`（half_range 65 / freq2 0.24 / noise_amp 0.46 / noise_step 0.72 / seed 46190）、spawner（speed 129、spacing 138）；新增 `tools/curve_tuner.gd` 游戏内调参面板；`curve_preview.gd` 增画中线与包络线；`playground.tscn` 直接指定 `.tres`。
