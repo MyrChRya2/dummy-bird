@@ -51,11 +51,14 @@
 | `GAME/tools/debug/` | **玩法调试件**（本作专属，**发布前应整体删除**） |
 | `GAME/tools/debug/curve_preview.gd` | 曲线可视化——画出 `ObstacleCurve` 的通道高度点带，并标注 `center_y` 中线与 `center_y ± half_range` 包络线 |
 | `GAME/tools/debug/curve_tuner.gd` | 游戏内实时调参面板——滑杆读写 `ObstacleCurve` 导出属性 + spawner 的 `spacing`/`speed`；**F1 显隐、F2 打印当前参数**；带"相邻落差"统计。只读写参数、不改游戏逻辑 |
-| `GAME/resources/` | **自定义 Resource 实例**（数据资产）：`ObstacleCurve.tres`——障碍通道曲线的参数实例，可在检查器里调 |
+| `GAME/resources/` | 数据资产：`ObstacleCurve.tres`（障碍通道曲线参数实例）+ `ui/menu_theme.tres`（**Theme 资源**——`Button/font_sizes/font_size = 5`，多个控件共享样式靠它，不用逐节点 `theme_override_*`） |
 | `GAME/.editorconfig` `.gitattributes` `.gitignore` | 引擎目录内的编辑器/Git 局部约定 |
 | `GAME/assets/` | 运行时素材。现有 `sprite/entity/player.png`、`sprite/tile/tiles.png`、`sprite/error/Eroor.png`；目录约定 `sprite/{bg,entity,item,tile,error}`、`audio/{bgm,sfx}`、`font/`、`ui/` |
-| `GAME/scenes/` | 正式场景：`Player.tscn`（角色）、`playground.tscn`（**当前主场景**：Player + ObstacleSpawner + 调试节点）、`obstacle/obstacle.tscn`（障碍复合体）、`obstacle/half.tscn`（纯几何 half） |
-| `GAME/scripts/` | GDScript：`Player.gd`、`jump.gd`、`00_movement.gd`；`state.svg` 是作者自定义的**节点图标**（由 `@icon("res://scripts/state.svg")` 引用，勿移动） |
+| `GAME/scenes/main.tscn` | **当前主场景**（框架入口）：`Main`(Node2D) → `UILayer`(CanvasLayer) 下并列挂 `StartMenu`/`PauseMenu`/`HUD`/`FailedManu`/`SettingsPanel`；脚本 `scripts/main.gd` |
+| `GAME/scenes/` 其余 | 正式场景：`Player.tscn`（角色）、`playground.tscn`（游戏世界：Player + ObstacleSpawner + KillZone + 调试节点）、`obstacle/obstacle.tscn`（障碍复合体）、`obstacle/half.tscn`（纯几何 half）、`failed_manu.tscn`（失败界面——**文件名疑为 `menu` 的笔误**） |
+| `GAME/scenes/ui/` | UI 界面场景：`start_menu.tscn` / `pause_menu.tscn` / `hud.tscn` / `settings_panel.tscn` |
+| `GAME/scripts/00_game_state.gd` | **状态机 Autoload `GameState`**（已在 project.godot 注册）：`enum State { BOOT, MENU, PLAYING, PAUSED, GAME_OVER, SETTINGS }`、`state_changed` 信号、`FailReason`+`failed` 信号、`toggle_pause()`（记住暂停前状态）、`open/close_settings()`、`restart_requested` 信号、`obstacle_speed` 只读缓存 |
+| `GAME/scripts/` 其余 | `main.gd`（主场景装配与状态驱动）、`Player.gd`、`jump.gd`、`00_movement.gd`；`state.svg` 是作者自定义**节点图标**（`@icon(...)` 引用，**勿移动**）。`ui/` = 各界面脚本 + `failed_menu.gd`；`world/` = `kill_zone.gd`（掉出世界检测，只报告失败不碰 UI/paused）；`obstacle/` = spawner/curve/obstacle |
 | `GAME/scripts/obstacle/` | **障碍物系统**（按功能分组，便于日后扩展多种障碍）：`spawner.gd`（生成）、`curve.gd`（`class_name ObstacleCurve`，双正弦+噪声通道曲线）、`obstacle.gd`（左移+出界回收） |
 | `GAME/DEV/test_scenes/` | **开发草稿区**——仅剩 `test_scene.tscn`（试玩沙盒：Spawner + 曲线预览）。正式资产已按功能归位（见 `scripts/obstacle/`、`scenes/obstacle/`），DEV 回到"干净的草稿区" |
 
@@ -106,6 +109,7 @@ dummy-bird/                        # 项目根（Git 仓库根）
 
 ## 七、更新记录
 
+- 2026-10-12（13）：**整套 UI/场景框架落地**——主场景切到 `scenes/main.tscn`（Main → UILayer + 五个界面）；`GameState` 状态机 Autoload 注册；新增 `scenes/ui/`（start_menu/pause_menu/hud/settings_panel）、`failed_manu.tscn`、`resources/ui/menu_theme.tres`（共享 Theme）、`scripts/world/kill_zone.gd`；playground 改接 KillZone。
 - 2026-10-11（12）：**项目目的明确为「学习技术美术」** → GDD 新增 §0（含取舍原则与推进顺序）、§5.4 框架架构、§5.5 UI 清单；ROADMAP 新增 **M1.5 整套框架**与 **M4 技术美术研究**里程碑；新建 `docs/tech-art-log.md`。
 - 2026-10-11（11）：曲线参数定稿（游戏内调优）——`ObstacleCurve.tres`（half_range 65 / freq2 0.24 / noise_amp 0.46 / noise_step 0.72 / seed 46190）、spawner（speed 129、spacing 138）；新增 `tools/curve_tuner.gd` 游戏内调参面板；`curve_preview.gd` 增画中线与包络线；`playground.tscn` 直接指定 `.tres`。
 - 2026-10-11（10）：同步障碍物生成系统——新增 `GAME/resources/`（自定义 Resource 数据资产 `ObstacleCurve.tres`）、`tools/debug/curve_preview.gd`（曲线可视化）、`DEV/test_scenes/` 障碍原型；`playground.tscn` 接入 Spawner；`project.godot` 新增空动作 `click`（待绑定）。

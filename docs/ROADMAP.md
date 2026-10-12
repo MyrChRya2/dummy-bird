@@ -59,13 +59,13 @@
 
 | # | 任务 | 完成标准 | 状态 |
 |---|---|---|---|
-| 2.5.1 | `Main.tscn` 骨架 | `Main`(Node) → `World`(Node2D) + `UILayer`(CanvasLayer)；设为**主场景**（改主场景用 `tools/engine/set_main_scene.gd`） | ⬜ |
-| 2.5.2 | `GameState` Autoload | 状态枚举 `MENU/PLAYING/PAUSED/GAME_OVER`；提供 `set_state()` + 状态变化信号；在 Project Settings → Autoload 注册 | ⬜ |
-| 2.5.3 | `SceneDirector` Autoload | 负责把关卡/界面装进 `World` 与 `UILayer`；提供 `goto_menu()` / `start_game()` 等入口 | ⬜ |
-| 2.5.4 | **开始菜单**（`scenes/ui/`） | 开始游戏 / 设置 / 退出三按钮；**"退出"按平台显隐**（网页端无意义）；显示最高分 | ⬜ |
-| 2.5.5 | **暂停界面** | Esc 呼出/关闭；继续 / 重开 / 回主菜单；**暂停时 World 停住（`get_tree().paused`）、UI 仍响应**；恢复时**复位到暂停前的状态** | ⬜ |
-| 2.5.6 | 输入动作（**工程设置，AI 可做**） | `ui_pause`（Esc）；移动端另给屏幕暂停按钮；确认 `ui_*` 默认动作全家可用 | ⬜ |
-| 2.5.7 | 状态流转验证 | 从启动 → 菜单 → 开始 → 游玩 → 暂停 → 继续 → 回菜单，全程无卡死/无残留状态 | ⬜ |
+| 2.5.1 | `Main.tscn` 骨架 | `Main` → `UILayer`(CanvasLayer) + 五个界面并列；设为**主场景** | ✅ 2026-10-12（`scenes/main.tscn`，`run/main_scene` 已切；注：实际未建单独的 `World` 节点，界面与游戏的装配统一走 `main.gd`） |
+| 2.5.2 | `GameState` Autoload | 状态枚举 + 状态变化信号 + 在 Autoload 注册 | ✅ 2026-10-12（`scripts/00_game_state.gd`；枚举多出 `BOOT` 与 `SETTINGS`，另带 `FailReason`/`failed`、`restart_requested`、`obstacle_speed`） |
+| 2.5.3 | `SceneDirector` Autoload | 负责装载关卡/界面 | 🔄 **未单独建**——场景装配改由 `scripts/main.gd` 承担（把界面作为子场景直接挂进 `UILayer`）。是否仍需要独立 SceneDirector，待场景变多后判断 |
+| 2.5.4 | **开始菜单**（`scenes/ui/`） | 开始游戏 / 设置 / 退出；"退出"按平台显隐；显示最高分 | 🔄 场景与脚本已建（`start_menu.tscn` + `start_menu.gd`）；**"退出"的平台显隐与最高分显示待确认** |
+| 2.5.5 | **暂停界面** | Esc 呼出/关闭；继续 / 重开 / 回主菜单；暂停时只停游戏、UI 仍响应；恢复复位到暂停前状态 | 🔄 场景与脚本已建（`pause_menu.tscn` + `pause_menu.gd`）；`GameState.toggle_pause()` 已实现"记住暂停前状态"；**整体流转待验证** |
+| 2.5.6 | 输入动作（**工程设置，AI 可做**） | `ui_pause`（Esc）；移动端另给屏幕暂停按钮 | ⬜ **待办**：`ui_pause` 尚未定义（当前只有 `flap`）。需要时说一声，AI 用 `tools/engine/setup_input_map.gd` 加好并验证 |
+| 2.5.7 | 状态流转验证 | 启动 → 菜单 → 开始 → 游玩 → 暂停 → 继续 → 回菜单，无卡死/无残留状态 | ⬜ **待做**（需要跑起来手测） |
 | 2.5.8 | 切后台行为（移动端） | 切后台自动暂停 + 静音；回来不跳帧 | ⬜ 需真机 |
 
 ## 2.6 M2/M3 说明
