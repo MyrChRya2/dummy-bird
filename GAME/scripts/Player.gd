@@ -11,17 +11,18 @@ const JUMP_VELOCITY: float = 100
 # Player.gd
 func _ready() -> void:
 	animate.play("default")
+	velocity.y = -JUMP_VELOCITY
 
 	
 func _physics_process(delta: float) -> void:
-	velocity.y += current_y_vlocity() * delta            # v += g·Δt
+	velocity.y += current_y_velocity() * delta           # v += g·Δt
 	velocity.y = minf(velocity.y, MAX_FALL_SPEED)
 	move_and_slide()
 	
 	#handle_animate()
 	
 	
-func current_y_vlocity() -> float:
+func current_y_velocity() -> float:
 	return GRAVITY * g_rate
 
 

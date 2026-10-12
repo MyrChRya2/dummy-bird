@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://uh13jwrfxb58"]
+
+[ext_resource type="Script" uid="uid://ha238ygejrmm" path="res://scripts/ui/hud.gd" id="1_hqnrr"]
+[ext_resource type="Texture2D" uid="uid://wtm6bborgglh" path="res://assets/sprite/error/Error.png" id="2_bo48s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kjv3"]
+atlas = ExtResource("2_bo48s")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0hmm"]
+atlas = ExtResource("2_bo48s")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tefeu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kjv3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0hmm")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="HUD" type="Control" unique_id=1462696810]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_hqnrr")
+
+[node name="SpeedBox" type="VBoxContainer" parent="." unique_id=1944586383]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 144.0
+offset_right = 108.0
+offset_bottom = 167.0
+
+[node name="SpeedLabel" type="Label" parent="SpeedBox" unique_id=1069322446]
+layout_mode = 2
+
+[node name="PauseButton" type="Button" parent="." unique_id=51357422]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 24.0
+offset_bottom = 24.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="PauseButton" unique_id=1016159524]
+position = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_tefeu")

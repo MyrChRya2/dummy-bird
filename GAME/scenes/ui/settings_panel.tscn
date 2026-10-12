@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Theme" path="res://resources/ui/menu_theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://scripts/ui/settings_panel.gd" id="2_script"]
+
+[node name="SettingsPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.627451)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 176.0
+offset_bottom = 32.0
+text = "SETTINGS"
+
+[node name="Hint" type="Label" parent="."]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 36.0
+offset_right = 300.0
+offset_bottom = 52.0
+text = "占位：音量 / 全屏 / 返回 还没做"
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 60.0
+offset_right = 96.0
+offset_bottom = 88.0
+theme = ExtResource("1_theme")
+
+[node name="BackButton" type="Button" parent="Buttons"]
+layout_mode = 2
+text = "BACK"

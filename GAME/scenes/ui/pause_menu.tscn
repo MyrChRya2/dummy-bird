@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://kv6dcbcik6mb"]
+
+[ext_resource type="Texture2D" uid="uid://wtm6bborgglh" path="res://assets/sprite/error/Error.png" id="1_6tw0m"]
+[ext_resource type="Theme" path="res://resources/ui/menu_theme.tres" id="2_theme"]
+[ext_resource type="Script" uid="uid://btf4va2lsu4ry" path="res://scripts/ui/pause_menu.gd" id="3_pause"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kjv3"]
+atlas = ExtResource("1_6tw0m")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0hmm"]
+atlas = ExtResource("1_6tw0m")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jyhfs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kjv3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0hmm")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="PauseMenu" type="Control" unique_id=1074482691]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_pause")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=2103040447]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 180.0
+color = Color(0, 0, 0, 0.09411765)
+
+[node name="Title" type="Label" parent="." unique_id=902254690]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 24.0
+offset_right = 294.0
+offset_bottom = 47.0
+text = "Now Pause"
+
+[node name="Buttons" type="VBoxContainer" parent="." unique_id=469509459]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 56.0
+offset_right = 270.0
+offset_bottom = 132.0
+theme = ExtResource("2_theme")
+
+[node name="ContinueButton" type="Button" parent="Buttons" unique_id=224956219]
+layout_mode = 2
+text = "CONTINUE"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/ContinueButton" unique_id=1663292571]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jyhfs")
+
+[node name="RestartButton" type="Button" parent="Buttons" unique_id=1331156647]
+layout_mode = 2
+text = "RESTART"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/RestartButton" unique_id=1999713548]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jyhfs")
+
+[node name="SettingsButton" type="Button" parent="Buttons" unique_id=1591230420]
+layout_mode = 2
+text = "SETTINGS"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/SettingsButton" unique_id=1983899290]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jyhfs")
+
+[node name="BackButton" type="Button" parent="Buttons" unique_id=818466312]
+layout_mode = 2
+text = "BACK TO MENU"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/BackButton" unique_id=1597424639]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jyhfs")

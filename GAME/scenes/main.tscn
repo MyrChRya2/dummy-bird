@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dhjm56dl0yjt1"]
+
+[ext_resource type="PackedScene" uid="uid://ca6rqihgcoke1" path="res://scenes/ui/start_menu.tscn" id="2_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://kv6dcbcik6mb" path="res://scenes/ui/pause_menu.tscn" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://uh13jwrfxb58" path="res://scenes/ui/hud.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://m4pnijkhiowj" path="res://scenes/failed_manu.tscn" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://cdgqse74v51io" path="res://scripts/main.gd" id="6_main"]
+[ext_resource type="PackedScene" path="res://scenes/ui/settings_panel.tscn" id="7_settings"]
+
+[node name="Main" type="Node2D" unique_id=1019997242]
+script = ExtResource("6_main")
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=112361548]
+
+[node name="StartMenu" parent="UILayer" unique_id=1646254304 instance=ExtResource("2_0wfyh")]
+
+[node name="PauseMenu" parent="UILayer" unique_id=1074482691 instance=ExtResource("3_sugp2")]
+
+[node name="HUD" parent="UILayer" unique_id=1462696810 instance=ExtResource("4_jyhfs")]
+
+[node name="FailedManu" parent="UILayer" unique_id=102079964 instance=ExtResource("5_tbgi4")]
+
+[node name="SettingsPanel" parent="UILayer" unique_id=1007235618 instance=ExtResource("7_settings")]

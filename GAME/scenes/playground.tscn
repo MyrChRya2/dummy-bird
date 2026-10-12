@@ -5,6 +5,10 @@
 [ext_resource type="Script" uid="uid://dqtrky4eld70c" path="res://tools/debug/curve_preview.gd" id="3_kddj0"]
 [ext_resource type="Script" uid="uid://cckoqj5l0hucq" path="res://tools/debug/curve_tuner.gd" id="4_q8s1k"]
 [ext_resource type="Resource" uid="uid://0i8ah2dqyte5" path="res://resources/ObstacleCurve.tres" id="5_curve"]
+[ext_resource type="Script" uid="uid://b15j6wdatx7p1" path="res://scripts/world/kill_zone.gd" id="6_kill"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kill"]
+size = Vector2(416, 64)
 
 [node name="Playground" type="Node2D" unique_id=993541263]
 
@@ -21,3 +25,11 @@ script = ExtResource("3_kddj0")
 [node name="CanvasLayer" type="CanvasLayer" parent="ObstacleSpawner" unique_id=2090634236]
 visible = false
 script = ExtResource("4_q8s1k")
+
+[node name="KillZone" type="Area2D" parent="." unique_id=2057426374]
+position = Vector2(160, 224)
+script = ExtResource("6_kill")
+
+[node name="WorldBottom" type="CollisionShape2D" parent="KillZone" unique_id=1856809625]
+position = Vector2(0, 24)
+shape = SubResource("RectangleShape2D_kill")

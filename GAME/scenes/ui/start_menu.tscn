@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://ca6rqihgcoke1"]
+
+[ext_resource type="Texture2D" uid="uid://wtm6bborgglh" path="res://assets/sprite/error/Error.png" id="1_irhji"]
+[ext_resource type="Script" uid="uid://c1pcxux7fu8cp" path="res://scripts/ui/start_menu.gd" id="2_script"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kjv3"]
+atlas = ExtResource("1_irhji")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0hmm"]
+atlas = ExtResource("1_irhji")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cs4y6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kjv3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0hmm")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="StartMenu" type="Control" unique_id=1646254304]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_script")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=1300088382]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 180.0
+color = Color(0, 0, 0, 0.09411765)
+
+[node name="Title" type="Label" parent="." unique_id=1754022903]
+layout_mode = 0
+offset_left = 109.0
+offset_top = 28.0
+offset_right = 214.0
+offset_bottom = 51.0
+text = "DUMMY BIRD"
+
+[node name="Buttons" type="VBoxContainer" parent="." unique_id=571680166]
+layout_mode = 0
+offset_left = 113.0
+offset_top = 62.0
+offset_right = 195.0
+offset_bottom = 163.0
+
+[node name="StartButton" type="Button" parent="Buttons" unique_id=2122257560]
+layout_mode = 2
+text = "START"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/StartButton" unique_id=88685475]
+visible = false
+sprite_frames = SubResource("SpriteFrames_cs4y6")
+
+[node name="SettingsButton" type="Button" parent="Buttons" unique_id=1231350186]
+layout_mode = 2
+text = "SETTINGS"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/SettingsButton" unique_id=1239506933]
+visible = false
+sprite_frames = SubResource("SpriteFrames_cs4y6")
+
+[node name="QuitButton" type="Button" parent="Buttons" unique_id=1279015483]
+layout_mode = 2
+text = "QUIT"

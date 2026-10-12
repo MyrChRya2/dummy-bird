@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://m4pnijkhiowj"]
+
+[ext_resource type="Theme" path="res://resources/ui/menu_theme.tres" id="1_7t0m4"]
+[ext_resource type="Texture2D" uid="uid://wtm6bborgglh" path="res://assets/sprite/error/Error.png" id="2_pr161"]
+[ext_resource type="Script" path="res://scripts/ui/failed_menu.gd" id="3_failed"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kjv3"]
+atlas = ExtResource("2_pr161")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0hmm"]
+atlas = ExtResource("2_pr161")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jbpgi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kjv3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0hmm")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="FailedManu" type="Control" unique_id=102079964]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 180.0
+script = ExtResource("3_failed")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=1721792355]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 180.0
+color = Color(0, 0, 0, 0.09411765)
+
+[node name="Title" type="Label" parent="." unique_id=93291425]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="ReasonLabel" type="Label" parent="." unique_id=771603414]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 24.0
+offset_right = 176.0
+offset_bottom = 40.0
+
+[node name="Buttons" type="VBoxContainer" parent="." unique_id=32487586]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 56.0
+offset_right = 270.0
+offset_bottom = 132.0
+theme = ExtResource("1_7t0m4")
+
+[node name="RestartButton" type="Button" parent="Buttons" unique_id=1478565238]
+layout_mode = 2
+text = "RESTART"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/RestartButton" unique_id=1906366817]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jbpgi")
+
+[node name="SettingsButton" type="Button" parent="Buttons" unique_id=1679587638]
+layout_mode = 2
+text = "SETTINGS"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/SettingsButton" unique_id=1465564310]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jbpgi")
+
+[node name="BackButton" type="Button" parent="Buttons" unique_id=642722675]
+layout_mode = 2
+text = "BACK TO MENU"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/BackButton" unique_id=903787007]
+visible = false
+sprite_frames = SubResource("SpriteFrames_jbpgi")

@@ -18,6 +18,7 @@ func _ready() -> void:
 		curve = ObstacleCurve.new()
 
 func _physics_process(delta: float) -> void:
+	GameState.obstacle_speed = speed          # 缓存给 HUD / 其它只读方（将来做难度 lerp 时这里自动就是最新值）
 	_to_next -= speed * delta
 	while _to_next <= 0.0:
 		_spawn()

@@ -154,7 +154,7 @@ func _add_slider(parent: Control, prop: String, mn: float, mx: float, step: floa
 	_value_labels[prop] = value_label
 
 	slider.value_changed.connect(func(v: float) -> void:
-		obj.set(prop, roundi(v) if as_int else v)     # 走 set() → 会触发 noise_seed 的 setter
+		obj.set(prop, float(roundi(v)) if as_int else v)  # 两个分支同为 float，否则 INCOMPATIBLE_TERNARY（走 set() → 会触发 noise_seed 的 setter）
 		value_label.text = _fmt(v, as_int))
 
 func _prop_is_int(obj: Object, prop: String) -> bool:
