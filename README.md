@@ -1,5 +1,7 @@
 # DummyBird
 
+**中文** · [English](#english)
+
 一款 **2D 像素 · 单键点击跳跃**小游戏（横屏、无剧情），目标平台为网页（itch.io）与 Android（TapTap）。
 
 > **项目的主要目的是学习技术美术（技美）**：游戏是载体，shader / 特效 / 渲染 / 动画这些能力才是主要产出。
@@ -310,3 +312,339 @@ godot --headless --path GAME --quit && echo "ok: 工程可运行"
 代码与文档以 **MIT** 许可发布，见 [LICENSE](LICENSE)。
 
 `GAME/icon.svg` 来自 Godot 引擎自带的默认工程图标模板（第三方内容，MIT），**正式发布前需替换为原创图标**。
+
+<br>
+
+---
+
+# English
+
+[中文](#dummybird) · **English**
+
+A small **2D pixel-art one-button jump game** (landscape, no story), targeting the web (itch.io) and Android (TapTap).
+
+> **The main purpose of this project is learning technical art.** The game is a vehicle; the real output is
+> skill in shaders, VFX, rendering and animation. When there's a trade-off, prefer the option you can
+> **learn something from** over the one that's merely convenient.
+
+This repository also serves as a **reference implementation of a game-project folder structure**.
+Below is what belongs in each layer and why it's grouped that way.
+To apply it to your own project, see [§6 Reusing the structure](#6-reusing-the-structure).
+
+---
+
+## 1. Directory overview
+
+```
+dummy-bird/                      # ← Git repo root = project root (not the Godot project root)
+├── README.md                    # this file: structure & conventions
+├── PROJECT_INDEX.md             # project index (space map + workflow rules)
+├── LICENSE                      # MIT
+├── .gitignore                   # root-level ignore rules
+│
+├── docs/                        # documentation hub (kept out of the game code)
+│   ├── GDD.md                   #   design doc: "what the game is"
+│   ├── ROADMAP.md               #   roadmap: "what to do next"
+│   ├── PROJECT_TREE_TEMPLATE.md #   full version of this spec (reusable; written in Chinese)
+│   ├── tech-art-log.md          #   technical-art experiment log (by technique, not by date)
+│   └── devlog/                  #   development log: "what happened that day"
+│       ├── TEMPLATE.md
+│       └── YYYY-MM-DD.md
+│
+├── GAME/                        # ← Godot project (engine dir; res:// points here)
+│   ├── project.godot            #   project config (renderer / stretch / version / main scene)
+│   ├── export_presets.cfg       #   export presets (Web / Android)
+│   ├── icon.svg
+│   ├── assets/                  #   runtime assets (shipped inside the build)
+│   │   ├── sprite/{bg,entity,item,tile,error}/
+│   │   └── audio/{bgm,sfx}/
+│   ├── scenes/                  #   production scenes (.tscn)
+│   │   ├── main.tscn            #     main scene: UILayer + all screens
+│   │   ├── playground.tscn      #     the game world
+│   │   ├── Player.tscn
+│   │   ├── failed_manu.tscn
+│   │   ├── obstacle/            #     feature-grouped scenes
+│   │   └── ui/                  #     UI scenes (menu / pause / HUD / settings)
+│   ├── scripts/                 #   GDScript
+│   │   ├── 00_game_state.gd     #     global state machine (Autoload)
+│   │   ├── main.gd              #     main-scene assembly
+│   │   ├── Player.gd / jump.gd / 00_movement.gd
+│   │   ├── obstacle/            #     feature-grouped scripts
+│   │   ├── ui/                  #     per-screen scripts
+│   │   └── world/               #     world rules (e.g. kill_zone)
+│   ├── resources/               #   custom Resource data (.tres)
+│   │   ├── ObstacleCurve.tres
+│   │   └── ui/menu_theme.tres   #     UI theme (shared styles)
+│   ├── tools/                   #   tool scripts (see §3.3)
+│   │   ├── engine/              #     project-setting tools (reusable across projects)
+│   │   └── debug/               #     gameplay debug tools (delete the whole dir before release)
+│   └── DEV/                     #   draft area (prototypes/experiments, no quality promise)
+│       └── test_scenes/
+│
+├── SOURCE/                      # ← source masters for art/audio (never shipped, always committed)
+│   ├── README.md                #   source ↔ runtime asset mapping table
+│   └── Resprite/                #   grouped by tool (Resprite projects)
+│
+└── EXPORTS/                     # ← build outputs (gitignored)
+    ├── web/<version>/
+    └── android/<version>.apk
+```
+
+> Notes: `.uid` (stable resource IDs), `.import` (import settings) and `.godot/` (engine cache) are omitted
+> from the tree. `.uid` and `.import` **must be committed**; `.godot/` **must be ignored**.
+
+---
+
+## 2. Grouping rationale: four principles
+
+### 2.1 Repo root = project root, not the Godot project root
+
+`GAME/` is just one directory inside the repo; `docs/`, `SOURCE/` and `EXPORTS/` sit next to it.
+
+| Approach | Pros | Costs |
+|---|---|---|
+| **Repo root = project root (this one)** | Docs, art sources, export config and builds all live in one repo; a single `.git`; swapping engines or adding tooling needs no relocation | Godot's `res://` stops at `GAME/`, so the engine can't see `docs/` — **which is the point**: docs must not end up in the game build |
+| Repo root = `GAME/` | Works immediately, shorter paths | Docs/sources/build scripts must go inside the project, where `res://` scans them, they leak into exports, and they pollute project-wide search |
+
+### 2.2 Docs separate from code (`docs/` vs `GAME/`)
+
+Docs don't go into `GAME/` because Godot scans everything under `res://`; `docs/` lives at the repo root,
+where the editor is completely unaware of it.
+The four documents have non-overlapping jobs: **GDD answers "what is it", ROADMAP answers "what's next",
+devlog answers "what happened that day", PROJECT_INDEX answers "where is everything"**.
+
+### 2.3 Runtime assets (`assets/`) separate from source masters (`SOURCE/`)
+
+- `GAME/assets/` holds **exported end products** (`.png` / `.wav`), which get packed into the build.
+- `SOURCE/` holds **editable masters** (`.resprite` / `.aseprite` / `.psd` / `.blend`) — **never shipped, always committed**.
+
+> **Why masters must be committed**: it was verified that exported PNGs contain **no embedded project data**
+> (the `tEXt`/`iTXt`/`zTXt` chunks are all empty). So the `.resprite` file is the *only* editable source —
+> lose it and you can't edit the art anymore, only redraw it.
+> Conversely, keeping masters under `assets/` means `res://` scans them, they ship in the build, and the package bloats.
+
+### 2.4 Feature grouping: one feature = one pair of same-named directories
+
+When a feature's files are scattered across `scripts/` and `scenes/` and number ≥ 3,
+**or the feature is already referenced by a production scene**, give it a pair of same-named directories:
+
+```
+scripts/obstacle/          scenes/obstacle/
+├── spawner.gd             ├── obstacle.tscn
+├── curve.gd               └── half.tscn
+└── obstacle.gd
+```
+
+**Rule of thumb**: if gathering one feature's files means hopping across three top-level directories,
+it's time to package it by feature. That's exactly how `obstacle/` and `ui/` grew in this project.
+
+> Don't pre-create ten levels of `core/`, `managers/`, `interfaces/` on day one — that's paying rent on
+> complexity that doesn't exist yet. At bootstrap time, `assets/ scenes/ scripts/ DEV/` is enough;
+> split when it actually grows.
+
+---
+
+## 3. What goes where
+
+### 3.1 `GAME/assets/` — runtime assets
+
+| Put here | Do NOT put here |
+|---|---|
+| Exported `.png` / `.wav` / `.ogg` / `.ttf` | Editable masters (`.aseprite` / `.resprite` / `.psd`) → `SOURCE/` |
+| Classified by purpose: `sprite/{bg,entity,item,tile,error}`, `audio/{bgm,sfx}` | Don't classify by "which tool made it" |
+| Keep names matching `SOURCE/` **purposes** so they map at a glance | Project config, docs, one-off scripts |
+
+### 3.2 `GAME/scenes/` and `GAME/scripts/` — production assets
+
+| Put here | Do NOT put here |
+|---|---|
+| Production `.tscn` scenes, production GDScript | Prototypes/experiments → `GAME/DEV/` |
+| Feature-grouped subdirectories (`obstacle/`, `ui/`, `world/`) | Dozens of flat files (if you can't find things, that's the signal to split) |
+| Shared styling via a **Theme resource** (`resources/ui/menu_theme.tres`) | Per-node `theme_override_*` copies (they don't inherit and can't be changed in one place) |
+
+**Naming conventions**
+
+| Kind | Convention | Example |
+|---|---|---|
+| Scenes | `PascalCase.tscn`, same name as root node | `Player.tscn` |
+| Scripts | `snake_case.gd` | `player_state_machine.gd` |
+| Assets | `snake_case` + purpose suffix | `bird_idle_01.png` |
+| Directories | all lowercase, singular, English | `assets/` `scenes/` `scripts/` |
+
+> ⚠️ **Godot only understands `res://`, not conventions**: folder rules are for humans; the engine only
+> follows path references inside scenes. **Files that are referenced must be moved/renamed by dragging in the
+> editor** (it rewrites all references for you); only files with zero external references can be renamed from
+> the filesystem. If you get `Cannot open file '<old path>'` afterwards, delete `.godot/uid_cache.bin` and let
+> the editor rebuild it.
+
+### 3.3 `GAME/tools/` — tool scripts, split in two
+
+| Directory | What goes here | At release |
+|---|---|---|
+| `tools/engine/` | Scripts that change project settings: main scene, renderer, pixel-perfect setup, input actions | **Keep** (reusable across projects) |
+| `tools/debug/` | Gameplay debug tools: curve preview, in-game tuning panel, state visualization | **Delete the entire directory** |
+
+**Why split**: it turns "remove debug tooling before release" into an executable action — *delete one directory* —
+instead of picking through a pile of scripts. Mixing them risks shipping debug code or deleting the wrong file.
+
+### 3.4 `GAME/DEV/` — draft area
+
+- **Put here**: prototype scenes, one-off experiment scripts, temporary feel tuning.
+- **Don't put here**: production gameplay code or production scenes.
+- **Promotion rule**: a successful draft gets moved into `scenes/` / `scripts/` *in the editor* and becomes
+  properly referenced; a failed one is simply deleted.
+- Optional: drop an empty `.gdignore` in it and Godot stops scanning it (cost: scenes inside can't run from the editor).
+
+### 3.5 `GAME/resources/` — data assets (Resource)
+
+- **Put here**: `.tres` instances of custom `Resource`s (curve parameters, themes, configs) — tunable in the Inspector.
+- **Don't put here**: code logic, scenes.
+
+### 3.6 `SOURCE/` — art/audio sources
+
+- Grouped by **tool** (`Resprite/`), since one tool = one project directory, which makes whole-directory
+  backup/migration easy.
+- `SOURCE/README.md` must maintain a **source ↔ runtime path ↔ dimensions** table — because `SOURCE/` is layered
+  by tool while `assets/` is layered by purpose; the two structures differ, so without the table you can't map them.
+
+### 3.7 `docs/` — documentation
+
+| File | Responsibility | When to update |
+|---|---|---|
+| `GDD.md` | Design constitution: gameplay, architecture, open decisions | Design changes / decisions made |
+| `ROADMAP.md` | Milestones, tasks, acceptance criteria, decision log, bug list | Task done / added / reprioritized |
+| `devlog/YYYY-MM-DD.md` | What was done today, what pitfalls were hit | End of each day |
+| `PROJECT_TREE_TEMPLATE.md` | Full version of this structure spec | Structure changes |
+| `tech-art-log.md` | Tech-art experiments: what to verify → how → what was learned → reusable? | Every experiment |
+
+### 3.8 `EXPORTS/` — build outputs (**not committed**)
+
+Web and Android build artifacts. Large and reproducible, therefore gitignored.
+
+---
+
+## 4. Version-control conventions (important)
+
+| File | Committed? | Why |
+|---|---|---|
+| `export_presets.cfg` | ✅ **commit** | Records Web/Android export settings; lets you reproduce exports after switching machines |
+| `*.uid` | ✅ **commit** | Stable resource IDs since Godot 4.4; without them the engine rebuilds IDs from paths and references break on renames |
+| `*.import` | ✅ **commit** | Import settings (filtering/compression) |
+| `SOURCE/**` masters | ✅ **commit** | The only editable source; unrecoverable if lost |
+| `.godot/` | ❌ ignore | Engine cache, rebuildable |
+| `EXPORTS/` `build/` `dist/` | ❌ ignore | Reproducible build outputs |
+| `*.keystore` `*.jks` | ❌ ignore | **Signing keys must never be committed** |
+
+---
+
+## 5. Common commands
+
+```bash
+# Run the project (headless self-check)
+godot --headless --path GAME --quit
+
+# Export Web (itch.io needs a single-threaded build: variant/thread_support=false)
+mkdir -p EXPORTS/web/<version>
+godot --headless --path GAME --export-release "Web"
+
+# Export Android (requires JDK 17 + Android SDK; debug builds use the debug keystore)
+mkdir -p EXPORTS/android
+godot --headless --path GAME --export-debug "Android"
+
+# Project-setting tools (all in GAME/tools/engine/, persisted via the ProjectSettings API)
+godot --headless --path GAME --script res://tools/engine/set_pixel_perfect.gd
+godot --headless --path GAME --script res://tools/engine/set_main_scene.gd -- res://scenes/main.tscn
+godot --headless --path GAME --script res://tools/engine/setup_input_map.gd
+```
+
+---
+
+## 6. Reusing the structure
+
+### Option A: use the template repo (recommended, one command)
+
+The structure has been extracted into a standalone template repo,
+**[MyrChRya2/godot-game-template](https://github.com/MyrChRya2/godot-game-template)**:
+
+```bash
+git clone git@github.com:MyrChRya2/godot-game-template.git ~/templates/godot-game-template
+cd ~/templates/godot-game-template
+./new-game.sh my-new-game --dir ~/projects     # scaffold + git init + initial commit
+```
+
+Then: Godot → Project Manager → Import → pick `my-new-game/GAME/project.godot`.
+
+### Option B: replicate manually
+
+Create directories following the tree in §1. Minimum set:
+
+```
+# Required
+docs/{GDD.md, ROADMAP.md, devlog/TEMPLATE.md, PROJECT_TREE_TEMPLATE.md}
+GAME/{assets,scenes,scripts,tools/{engine,debug},DEV}
+SOURCE/
+.gitignore  README.md  LICENSE  PROJECT_INDEX.md
+
+# Add when needed
+GAME/resources/            # when the first .tres data asset appears
+GAME/scenes/<feature>/     # when a feature has ≥3 files or is referenced by a production scene
+```
+
+---
+
+## 7. Replication contract for AI / automation
+
+> This section is a **verifiable structural contract**: implement it as written and the result should match
+> this repository's structure.
+
+**MUST**
+
+1. Repo root = project root; the Godot project lives in `GAME/` and contains `project.godot`.
+2. Top level must contain `docs/`, `GAME/`, `SOURCE/`; `GAME/` must contain `assets/`, `scenes/`, `scripts/`,
+   `tools/`, `DEV/`.
+3. `tools/` must be split into `engine/` (project-setting scripts) and `debug/` (gameplay debug tools).
+4. `.gitignore` must ignore: `.godot/`, `EXPORTS/`, `build/`, `dist/`, `*.keystore`, `*.jks`.
+5. `.gitignore` must **not** ignore `export_presets.cfg`, `*.uid`, `*.import`, or `SOURCE/**`.
+6. `SOURCE/` must contain a `README.md` with a "source ↔ runtime path ↔ dimensions" mapping table.
+7. Runtime assets go in `GAME/assets/`; editable masters go in `SOURCE/`; the two must **never be mixed**.
+
+**SHOULD**
+
+8. Split documentation by responsibility (GDD / ROADMAP / devlog / structure spec) with no duplicated content.
+9. When a feature reaches 3 files or is referenced by a production scene, create same-named
+   `scripts/<feature>/` + `scenes/<feature>/` directories.
+10. Share UI styling through a Theme resource rather than per-node `theme_override_*`.
+11. Set the main scene in `project.godot`'s `run/main_scene` (without it, F5 always errors).
+
+**Acceptance self-check**
+
+```bash
+# Are all directories present?
+for d in docs GAME GAME/assets GAME/scenes GAME/scripts GAME/tools GAME/tools/engine GAME/tools/debug GAME/DEV SOURCE; do
+  [ -d "$d" ] || echo "missing: $d"
+done
+# Are the ignore rules right?
+git check-ignore -q GAME/.godot && echo "ok: .godot ignored"
+git check-ignore -q GAME/export_presets.cfg || echo "ok: export_presets.cfg committable"
+# Does the project run?
+godot --headless --path GAME --quit && echo "ok: project runs"
+```
+
+---
+
+## 8. Known cleanup items
+
+| Item | Note |
+|---|---|
+| `GAME/scenes/failed_manu.tscn` | Filename is likely a typo for `failed_menu` (the script is already `failed_menu.gd`); rename must be done inside the editor to preserve references |
+| `GAME/assets/audio/{bgm,sfx}` | Planned but still no audio assets |
+| `SOURCE/Resprite/manu.resprite` | Committed, but has no exported counterpart yet |
+
+---
+
+## 9. License
+
+Code and docs are released under the **MIT** license, see [LICENSE](LICENSE).
+
+`GAME/icon.svg` comes from Godot's built-in default project icon template (third-party content, MIT) and
+**must be replaced with original art before release**.
