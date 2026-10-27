@@ -2,7 +2,7 @@
 
 > 本文件是**跨项目复用**的目录规范：说明每一层放什么、为什么这么分、什么时候该拆。
 > 它随 dummy-bird 一起演进——**每开一个新项目、每踩一次"文件找不到"的坑，就回来改本文件并升版本号。**
-> 配套可直接复制的骨架：`templates/godot-2d/`，生成脚本 `templates/new-game.sh`。
+> 配套骨架与生成脚本已抽出为**独立模板仓**：`MyrChRya2/godot-game-template`（本仓库不再保留 `templates/` 副本，避免双副本漂移）。
 > 最后更新：2026-10-11
 
 ---
@@ -15,7 +15,7 @@ my-game/                      # ← Git 仓库根 = 项目根
 ├── docs/                     # 文档中心（见 §3）
 ├── GAME/                     # Godot 工程（引擎目录）
 ├── SOURCE/                    # 美术/音频源文件母版（可编辑工程）
-├── templates/                # 可复用骨架与本模板
+└── (无 templates/)            # 骨架已移到独立仓 godot-game-template
 └── .dsh-meow/                # AI 会话记忆库（不入 Git）
 ```
 
