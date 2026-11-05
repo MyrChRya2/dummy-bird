@@ -179,7 +179,7 @@
 | 纹理过滤 | **Nearest（`default_texture_filter=0`，2026-10-11 已设置）**；原为 Linear 会让像素画发糊 |
 | 美术分辨率基线 | ⬜ 待定（见待决策 #3） |
 | 物理引擎 | 3D 侧 `Jolt Physics`（2D 项目无关） |
-| 主场景 | `scenes/playground.tscn`（2026-10-11 设置；起盘占位，正式开发时替换，用 `GAME/tools/engine/set_main_scene.gd` 改） |
+| 主场景 | **`scenes/main.tscn`**（`uid://dhjm56dl0yjt1`，2026-10-12 起；`World` + `UILayer` 并列，见 §5.4）。`scenes/playground.tscn` 现为**游戏世界**场景，由 `main.gd` 按需装载 |
 
 ### 5.2 待定架构项
 
@@ -195,10 +195,10 @@
 | # | 项 | 说明 | 状态 |
 |---|---|---|---|
 | **P1** | **像素完美渲染** | ✅ **已完成**。`textures/canvas_textures/default_texture_filter=0`（**0 = Nearest**）。枚举权威定义由引擎给出：`hint_string = "Nearest,Linear,Linear Mipmap,Nearest Mipmap"`、默认 1 → 0=Nearest,1=Linear,2=Linear Mipmap,3=Nearest Mipmap。<br>⚠️ 易踩坑：`CanvasItem.TEXTURE_FILTER_*` 是**另一套**枚举（0=PARENT_NODE,1=NEAREST,2=LINEAR），两者不能混用比对。工具：`GAME/tools/engine/set_pixel_perfect.gd` | ✅ 2026-10-11 |
-| **P2** | **窗口拉伸方式** | ✅ **已完成**：`canvas_items` + `expand` + `integer`。选型依据（实测）：`expand` 会按需扩展视口短轴（800×450 窗口下视口变 320×**320**），因此**不会产生黑边**，适合横屏多机型；`integer` 保证整数倍缩放、像素均匀。若某机型出现黑边或抖动，把 `scale_mode` 改回 `fractional`、或换 `viewport` 模式即可（两者都是单行改动） | ✅ 2026-10-11 |
+| **P2** | **窗口拉伸方式** | ✅ **已完成**：`canvas_items` + **`keep`** + `integer`（2026-10-12 由 `expand` 改为 `keep`，commit `27cee9f`）。改因（实测）：`expand` 会随窗口比例扩展逻辑视口（16:9 → 320×180，方形窗口 → **320×320**），**可见区域随之变化会导致画面穿帮**（用户原话「画面比例并不是固定的…会导致穿帮」）；`keep` 保持基础比例、多余部分补黑边，**逻辑视口恒为 320×180**。`integer` 保证整数倍缩放、像素均匀。若某机型黑边过多，可评估换 `keep_height`（无黑边但横向可见范围会变） | ✅ 2026-10-12 |
 | **P3** | **屏幕方向与窗口尺寸** | ✅ **已完成**：**横屏** + 基础视口 **320×180**（16:9，1080p 的整数倍）。`handheld/orientation=1` | ✅ 2026-10-11 |
-| **P4** | **Web 导出预设** | 目标 itch.io。⚠️ **itch.io 托管需用「单线程」Web 导出**——itch.io 不发送 COOP/COEP 响应头，而 Godot 的多线程 Web 导出依赖 `SharedArrayBuffer`，会加载失败；官方文档明确建议面向 itch.io 时关闭线程支持。横屏 16:9 在网页里也更贴合常规显示比例 | ⬜ 待配置 |
-| **P5** | **Android 导出预设** | 目标 TapTap。需 Android SDK + JDK + 签名密钥库。**可不必本地装**：本机已有 GitHub Actions CI 基础设施，可用它构建 APK | ⬜ 待配置 |
+| **P4** | **Web 导出预设** | 目标 itch.io。⚠️ **itch.io 托管需用「单线程」Web 导出**——itch.io 不发送 COOP/COEP 响应头，而 Godot 的多线程 Web 导出依赖 `SharedArrayBuffer`，会加载失败；官方文档明确建议面向 itch.io 时关闭线程支持。横屏 16:9 在网页里也更贴合常规显示比例 | ✅ **2026-10-12 已落实**：预设 `Web`，`variant/thread_support=false`、`html/canvas_resize_policy=2`；产物 `EXPORTS/web/<版本>/`。验证：导出 exit=0、`index.html` 内 `crossOriginIsolated`/`SharedArrayBuffer` 均为 **0 处**（单线程判据）、`--headless --main-pack` 加载零报错 |
+| **P5** | **Android 导出预设** | 目标 TapTap。需 Android SDK + JDK + 签名密钥库。**可不必本地装**：本机已有 GitHub Actions CI 基础设施，可用它构建 APK | ✅ **2026-10-12 已落实**：预设 `Android`，产物 `EXPORTS/android/<版本>-DummyBird.apk`（debug 签名，28.4 MB）；`aapt2` 回读确认 `versionName=DEV-0.0.2`/`versionCode=1`/`targetSdk=36`。前置已配：`import_etc2_astc=true`（Godot 硬要求）、编辑器 `java_sdk_path`/`android_sdk_path`、`keystores/debug.keystore`。⚠️ 上架前须改 `package/unique_name`（现为占位 `com.example.dummybird`）并递增 `versionCode` |
 | **P6** | **触屏与系统手势** | 全屏轻触可能撞上返回手势；切后台需自动暂停（见 §3.3） | ⬜ |
 | **P7** | **设置项外露** | 音量、音效开关——移动端玩家预期要求有；建议 M2 前留好入口 | ⬜ |
 
@@ -282,15 +282,19 @@ GameState:  MENU  →  PLAYING  →  PAUSED  →  GAME_OVER
 | 3 | 美术分辨率基线 | 16×16 / 32×32 / 更高；影响相机缩放与素材规格 | ⬜ | |
 | 4 | `DEV/` 草稿区的保留策略 | 草稿场景何时晋升到 `scenes/`、何时删除 | ⬜ | |
 | 5 | 是否引入 `addons/` 第三方插件 | 参考项目用到了 `debug_system`、`TileMapDual` | ⬜ | |
-| 6 | 像素完美渲染设置（P1+P2） | Nearest 过滤 + 拉伸方式 | ✅ | **已落实**：`default_texture_filter=0`；`canvas_items`/`expand`/`integer`；工具 `set_pixel_perfect.gd` |
+| 6 | 像素完美渲染设置（P1+P2） | Nearest 过滤 + 拉伸方式 | ✅ | **已落实**：`default_texture_filter=0`；`canvas_items`/**`keep`**/`integer`（2026-10-12 由 expand 改 keep，避免画面穿帮）；工具 `set_pixel_perfect.gd` |
 | 7 | 竖屏还是横屏 | 影响全部场景构图与素材规格 | ✅ | **横屏**（参照「滑雪大冒险」的横屏侧视形态）；基础视口 320×180 |
 | 8 | TapTap 上架路径 | 自行打包 APK / 复用 GitHub Actions 构建；需确认 TapTap 开发者注册与审核要求 | ⬜ | |
 | 9 | 商业模式 | 免费 / 广告 / 买断——影响是否需要接 SDK 与设置项 | ⬜ | |
 | 10 | 「笨鸟先飞」名称可用性 | 该词是成语，但**已存在同名游戏的可能性需核实**；若冲突，`DummyBird` 作英文名不受影响，中文名另取 | ⬜ | |
 | 11 | UI 字体方案 | 先用内置字体（已定大方向）；像素字体的具体选型属技美阶段 | 🔄 | 大方向：先用内置；具体字体推迟 |
 | 12 | 暂停时 BGM 是否继续 | 继续播（低音量）/ 完全暂停——影响听感与实现 | ⬜ | |
-| 13 | 技美实验的载体形式 | 独立 demo 场景 / 直接做进游戏 —— 建议前者（能自由试错，不污染主线） | ⬜ | |
+| 13 | 技美实验的载体形式 | 独立 demo 场景 / 直接做进游戏 —— 建议前者（能自由试错，不污染主线） | ✅ | **技美依赖美术资源**（用户 2026-11-06：「技美有误美术」= 技美要美术）。因此顺序调整为：**先把核心玩法做扎实 + 只做必要的美术占位**；等核心玩法稳定、美术资源跟上后再进入技美阶段，载体仍倾向独立 demo 场景 |
 
+| 14 | 死亡判定的边界范围 | 左侧已实现「被推出屏幕」判定；**顶部天花板**与**右侧**暂无判定带 | ✅ | **天花板先忽略**、右侧暂不补（用户 2026-11-06 定）。当前机制下鸟不会被推向右/上，右侧与顶部均无实际触发场景；若后续玩法出现向右的推力再补 |
+| 15 | 美术资源到什么程度 | 用户 2026-11-06：「当然不是最终版了，现在只是占位，我几乎没做美术资源」 | ✅ | **当前全部美术均为占位**（含 `manu.resprite`——已入库但非定稿、尚无导出 PNG）。策略：**核心玩法优先，只做必要的美术占位**，正式美术等玩法稳定后统一做 |
+| 16 | 调试件的处置时机 | 原计划「发布前整体删除 `tools/debug/`」 | ✅ | **解耦等到项目收尾再做**（用户 2026-11-06）。计划：把调试功能抽成不依赖本作的组件，并入用户的 **F3-debugger**——功能保留复用，只是不进正式包。**在此之前调试件照常留在 `tools/debug/`，不要删** |
+| 17 | GitHub 仓库 description / topics | 两仓一直没有描述与标签 | ✅ | **不用补**（用户 2026-11-06） |
 ## 7. 已废弃 / 已放弃的设计
 
 > 记录"想清楚不做什么"，避免反复。
