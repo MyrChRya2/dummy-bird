@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dypri8tmq6g2f" path="res://assets/sprite/entity/player.png" id="1_p0vlq"]
 [ext_resource type="Script" uid="uid://bi5kqfd3payjt" path="res://scripts/Player.gd" id="1_v6fml"]
 [ext_resource type="Script" uid="uid://ds3a2hka881bb" path="res://scripts/jump.gd" id="3_3li8b"]
+[ext_resource type="Script" uid="uid://cpb1mud8f1w7t" path="res://scripts/player/x_hold_pid.gd" id="4_xpid"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_on746"]
 animations = [{
@@ -29,3 +30,12 @@ shape = SubResource("CircleShape2D_cs4y6")
 
 [node name="Jump" type="Node" parent="." unique_id=1934515498]
 script = ExtResource("3_3li8b")
+
+[node name="XHoldPID" type="Node" parent="." unique_id=1073924155]
+script = ExtResource("4_xpid")
+kp = 2.0
+ki = 0.1
+kd = 5.0
+use_max_speed = false
+max_speed = 10000.0
+max_accel = 100.0

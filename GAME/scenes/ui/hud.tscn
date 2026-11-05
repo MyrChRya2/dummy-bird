@@ -55,3 +55,17 @@ offset_bottom = 24.0
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="PauseButton" unique_id=1016159524]
 position = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_tefeu")
+
+[node name="ReadyHint" type="Label" parent="." unique_id=887345201]
+visible = false
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_top = 100.0
+offset_right = 60.0
+offset_bottom = 116.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 10
+text = "TAP TO START"
+horizontal_alignment = 1

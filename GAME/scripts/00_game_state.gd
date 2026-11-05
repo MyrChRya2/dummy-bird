@@ -1,6 +1,6 @@
 extends Node
 
-enum State { BOOT, MENU, PLAYING, PAUSED, GAME_OVER, SETTINGS }
+enum State { BOOT, MENU, READY, PLAYING, PAUSED, GAME_OVER, SETTINGS }
 
 signal state_changed(from: State, to: State)
 
@@ -33,6 +33,15 @@ func report_failure(reason: FailReason) -> void:
 	last_fail_reason = reason
 	state = State.GAME_OVER
 	failed.emit(reason)
+
+# ---------------- 开局准备（READY）----------------
+
+## READY = 世界已装载但整体冻结（get_tree().paused = true）：鸟不动、障碍不生成、曲线不走。
+## 玩家第一次点击/触摸时才真正开始。给玩家留出"看清楚局面"的准备时间。
+func begin_play() -> void:
+	if state != State.READY:
+		return
+	state = State.PLAYING
 
 # ---------------- 暂停 ----------------
 

@@ -13,7 +13,8 @@ func _ready() -> void:
 	_quit_button.pressed.connect(_on_quit_pressed)
 
 func _on_start_pressed() -> void:
-	GameState.state = GameState.State.PLAYING
+	# 先进 READY（世界装载但冻结），玩家第一次点击才开始 —— 留出准备时间
+	GameState.state = GameState.State.READY
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()

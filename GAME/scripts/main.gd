@@ -32,6 +32,10 @@ func _ready() -> void:
 		_apply(GameState.state)
 
 func _unhandled_input(event: InputEvent) -> void:
+	# READY：世界已装载但冻结，玩家第一次点击/触摸才开始（给一点准备时间）
+	if GameState.state == GameState.State.READY and event.is_action_pressed("flap"):
+		GameState.begin_play()
+		return
 	if event.is_action_pressed("ui_cancel"):        # Esc：暂停 / 继续
 		GameState.toggle_pause()
 
@@ -40,14 +44,15 @@ func _on_state_changed(_from: int, to: int) -> void:
 
 func _on_restart_requested() -> void:
 	_unload_world()                                  # 先卸掉，_apply 会重新建一个
-	GameState.state = GameState.State.PLAYING
+	GameState.state = GameState.State.READY          # 重开也走"先准备、首次点击才开始"
 
 func _apply(state: int) -> void:
 	_start_menu.visible = state == GameState.State.MENU
 	_pause_menu.visible = state == GameState.State.PAUSED
 	_failed_menu.visible = state == GameState.State.GAME_OVER
 	_settings_panel.visible = state == GameState.State.SETTINGS
-	_hud.visible = state == GameState.State.PLAYING \
+	_hud.visible = state == GameState.State.READY \
+			or state == GameState.State.PLAYING \
 			or state == GameState.State.PAUSED \
 			or state == GameState.State.GAME_OVER
 

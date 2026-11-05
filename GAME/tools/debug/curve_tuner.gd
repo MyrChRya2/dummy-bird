@@ -19,6 +19,12 @@ var _built := false
 
 func _ready() -> void:
 	_spawner = spawner
+	# ⚠️ 面板显隐靠 _panel.visible，但如果**这个 CanvasLayer 自己被隐藏**（场景里曾存了 visible=false），
+	#    怎么切 _panel.visible 都看不见 —— 所以这里强制让 CanvasLayer 可见。
+	visible = true
+	# 世界在 READY/暂停时整体暂停（PROCESS_MODE_PAUSABLE），那样 _input/_process 都不会跑、F1 失效。
+	# 调试件设 ALWAYS：只要世界存在，任何状态都能按 F1/F2。
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func _input(event: InputEvent) -> void:
 	if not (event is InputEventKey and event.pressed and not event.echo):
@@ -55,6 +61,7 @@ func _build() -> void:
 
 	_panel = PanelContainer.new()
 	_panel.position = Vector2(3, 3)
+	_panel.visible = false          # 默认收起，按 F1 才展开
 	add_child(_panel)
 
 	var cols := HBoxContainer.new()
@@ -77,7 +84,10 @@ func _build() -> void:
 
 	_heading(right, "生成 (Spawner)")
 	_add_slider(right, "spacing", 40.0, 480.0, 1.0, _spawner)
-	_add_slider(right, "speed", 0.0, 300.0, 1.0, _spawner)
+	_add_slider(right, "speed_start", 0.0, 400.0, 1.0, _spawner)
+	_add_slider(right, "speed_accel", 0.0, 20.0, 0.1, _spawner)
+	_add_slider(right, "accel_switch_speed", 0.0, 1000.0, 10.0, _spawner)
+	_add_slider(right, "accel_after_switch", 0.0, 30.0, 0.5, _spawner)
 	_add_slider(right, "noise_seed", 0.0, 99999.0, 1.0)
 
 	var print_button := Button.new()
@@ -110,7 +120,7 @@ func _print_params() -> void:
 	for p in ["center_y", "half_range", "amp1", "freq1", "amp2", "freq2", "noise_amp", "noise_step", "noise_seed"]:
 		out.append("%s = %s" % [p, _fmt_full(_curve.get(p))])
 	out.append("========== 生成参数（Spawner 节点）==========")
-	for p in ["spacing", "speed", "spawn_margin"]:
+	for p in ["spacing", "speed_start", "speed_accel", "accel_switch_speed", "accel_after_switch", "spawn_margin"]:
 		out.append("%s = %s" % [p, _fmt_full(_spawner.get(p))])
 	print("\n".join(out))
 
