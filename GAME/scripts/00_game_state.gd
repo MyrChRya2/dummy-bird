@@ -50,7 +50,10 @@ func current_score() -> float:
 ## 例：12.3456 → "00.12.345"；83.05 → "01.23.050"
 func format_time(seconds: float) -> String:
 	var total_ms: int = int(roundf(maxf(seconds, 0.0) * 1000.0))
+	# 这里是**故意**的整数除法：分数就是截断取整（毫秒级），不需要四舍五入
+	@warning_ignore("integer_division")
 	var m: int = total_ms / 60000
+	@warning_ignore("integer_division")
 	var s2: int = (total_ms % 60000) / 1000
 	var ms: int = total_ms % 1000
 	return "%02d.%02d.%03d" % [m, s2, ms]
