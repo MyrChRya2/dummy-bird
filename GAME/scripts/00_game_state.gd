@@ -48,7 +48,7 @@ func current_score() -> float:
 
 ## 把秒数格式化成「分.秒.毫秒」，与排行榜占位 "00.00.00" 对齐。
 ## 例：12.3456 → "00.12.345"；83.05 → "01.23.050"
-static func format_time(seconds: float) -> String:
+func format_time(seconds: float) -> String:
 	var total_ms: int = int(roundf(maxf(seconds, 0.0) * 1000.0))
 	var m: int = total_ms / 60000
 	var s2: int = (total_ms % 60000) / 1000
