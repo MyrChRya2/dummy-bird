@@ -12,6 +12,7 @@ const WORLD_PATH := "res://scenes/playground.tscn"
 @onready var _hud: Control = $UILayer/HUD
 @onready var _failed_menu: Control = $UILayer/FailedManu
 @onready var _settings_panel: Control = $UILayer/SettingsPanel
+@onready var _scoreboard: Control = $UILayer/ScoreBoard
 
 var _world: Node = null
 var _world_wanted := false      # 世界"该不该存在"只由游戏流程决定，设置面板不影响它
@@ -51,6 +52,7 @@ func _apply(state: int) -> void:
 	_pause_menu.visible = state == GameState.State.PAUSED
 	_failed_menu.visible = state == GameState.State.GAME_OVER
 	_settings_panel.visible = state == GameState.State.SETTINGS
+	_scoreboard.visible = state == GameState.State.RANKING
 	_hud.visible = state == GameState.State.READY \
 			or state == GameState.State.PLAYING \
 			or state == GameState.State.PAUSED \

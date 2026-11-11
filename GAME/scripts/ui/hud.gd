@@ -21,4 +21,4 @@ func _on_state_changed(_from: int, to: int) -> void:
 func _process(_delta: float) -> void:
 	_speed_label.text = "速度 %.0f px/s" % GameState.obstacle_speed
 	# 分数＝存活时间：READY 时显示 0.0s，PLAYING 起每帧增长
-	_score_label.text = "%.1fs" % GameState.current_score()
+	_score_label.text = GameState.format_time(GameState.current_score())

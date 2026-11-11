@@ -1,6 +1,6 @@
 extends Node
 
-enum State { BOOT, MENU, READY, PLAYING, PAUSED, GAME_OVER, SETTINGS }
+enum State { BOOT, MENU, READY, PLAYING, PAUSED, GAME_OVER, SETTINGS, RANKING }
 
 signal state_changed(from: State, to: State)
 
@@ -45,6 +45,15 @@ func _process(delta: float) -> void:
 ## 当前分数 = 存活时间（秒）
 func current_score() -> float:
 	return elapsed
+
+## 把秒数格式化成「分.秒.毫秒」，与排行榜占位 "00.00.00" 对齐。
+## 例：12.3456 → "00.12.345"；83.05 → "01.23.050"
+static func format_time(seconds: float) -> String:
+	var total_ms: int = int(roundf(maxf(seconds, 0.0) * 1000.0))
+	var m: int = total_ms / 60000
+	var s2: int = (total_ms % 60000) / 1000
+	var ms: int = total_ms % 1000
+	return "%02d.%02d.%03d" % [m, s2, ms]
 
 func _reset_run() -> void:
 	elapsed = 0.0
@@ -168,3 +177,20 @@ func close_settings() -> void:
 	if state != State.SETTINGS:
 		return
 	state = _state_before_settings
+
+# ---------------- 排行榜面板 ----------------
+
+## 排行榜是"叠在"当前画面上的独立界面（从主菜单进），与 SETTINGS 同一套模式：
+## 记住打开前的状态，关闭时回到它。
+var _state_before_ranking: State = State.MENU
+
+func open_ranking() -> void:
+	if state == State.RANKING:
+		return
+	_state_before_ranking = state
+	state = State.RANKING
+
+func close_ranking() -> void:
+	if state != State.RANKING:
+		return
+	state = _state_before_ranking

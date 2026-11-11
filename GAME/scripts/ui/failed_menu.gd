@@ -33,13 +33,13 @@ func _refresh_reason() -> void:
 
 ## 本局成绩 + 历史最高 + 排行榜 Top5（全部来自 GameState，本地存档）
 func _refresh_score() -> void:
-	_score_label.text = "本局  %.1fs" % GameState.last_score
-	_best_label.text = "最高  %.1fs" % GameState.best_score
+	_score_label.text = "本局  %s" % GameState.format_time(GameState.last_score)
+	_best_label.text = "最高  %s" % GameState.format_time(GameState.best_score)
 	var lines: PackedStringArray = []
 	var n: int = mini(GameState.records.size(), 5)
 	for i in range(n):
 		var r: Dictionary = GameState.records[i]
-		lines.append("%d.  %.1fs" % [i + 1, float(r.get("score", 0.0))])
+		lines.append("%d.  %s" % [i + 1, GameState.format_time(float(r.get("score", 0.0)))])
 	if lines.is_empty():
 		lines.append("（暂无记录）")
 	_rank_label.text = "\n".join(lines)

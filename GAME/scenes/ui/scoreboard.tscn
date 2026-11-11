@@ -1,10 +1,13 @@
-[gd_scene format=3 uid="uid://cw5tspoelsjc8"]
+[gd_scene load_steps=2 format=3 uid="uid://cw5tspoelsjc8"]
 
-[node name="ScoreBourd" type="Control" unique_id=600871658]
+[ext_resource type="Script" path="res://scripts/ui/scoreboard.gd" id="1_sboard"]
+
+[node name="ScoreBoard" type="Control" unique_id=600871658]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 320.0
 offset_bottom = 180.0
+script = ExtResource("1_sboard")
 
 [node name="Label" type="Label" parent="." unique_id=817840721]
 layout_mode = 0
@@ -71,14 +74,14 @@ text = "HH:MM MM/DD"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="ToGlobel" type="Button" parent="." unique_id=1222596124]
+[node name="ToGlobal" type="Button" parent="." unique_id=1222596124]
 layout_mode = 0
 offset_left = 240.0
 offset_top = 144.0
 offset_right = 295.0
 offset_bottom = 168.0
 theme_override_font_sizes/font_size = 10
-text = "GLOBEL"
+text = "GLOBAL"
 
 [node name="Back" type="Button" parent="." unique_id=732398367]
 layout_mode = 0

@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://m4pnijkhiowj" path="res://scenes/failed_manu.tscn" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://cdgqse74v51io" path="res://scripts/main.gd" id="6_main"]
 [ext_resource type="PackedScene" path="res://scenes/ui/settings_panel.tscn" id="7_settings"]
+[ext_resource type="PackedScene" uid="uid://cw5tspoelsjc8" path="res://scenes/ui/scoreboard.tscn" id="8_score"]
 
 [node name="Main" type="Node2D" unique_id=1019997242]
 script = ExtResource("6_main")
@@ -21,3 +22,5 @@ script = ExtResource("6_main")
 [node name="FailedManu" parent="UILayer" unique_id=102079964 instance=ExtResource("5_tbgi4")]
 
 [node name="SettingsPanel" parent="UILayer" unique_id=1007235618 instance=ExtResource("7_settings")]
+
+[node name="ScoreBoard" parent="UILayer" unique_id=600871658 instance=ExtResource("8_score")]

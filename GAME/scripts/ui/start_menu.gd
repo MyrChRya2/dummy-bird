@@ -3,6 +3,7 @@ extends Control
 
 @onready var _start_button: Button = $Buttons/StartButton
 @onready var _settings_button: Button = $Buttons/SettingsButton
+@onready var _ranking_button: Button = $Buttons/RankingButton
 @onready var _quit_button: Button = $Buttons/QuitButton
 
 func _ready() -> void:
@@ -10,6 +11,7 @@ func _ready() -> void:
 	_quit_button.visible = OS.has_feature("pc")
 	_start_button.pressed.connect(_on_start_pressed)
 	_settings_button.pressed.connect(_on_settings_pressed)
+	_ranking_button.pressed.connect(_on_ranking_pressed)
 	_quit_button.pressed.connect(_on_quit_pressed)
 
 func _on_start_pressed() -> void:
@@ -21,3 +23,6 @@ func _on_quit_pressed() -> void:
 
 func _on_settings_pressed() -> void:
 	GameState.open_settings()
+
+func _on_ranking_pressed() -> void:
+	GameState.open_ranking()
