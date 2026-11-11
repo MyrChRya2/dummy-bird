@@ -4,6 +4,7 @@ extends Control
 @onready var _speed_label: Label = $SpeedBox/SpeedLabel
 @onready var _pause_button: Button = $PauseButton
 @onready var _ready_hint: Label = $ReadyHint
+@onready var _score_label: Label = $ScoreLabel
 
 
 func _ready() -> void:
@@ -19,3 +20,5 @@ func _on_state_changed(_from: int, to: int) -> void:
 
 func _process(_delta: float) -> void:
 	_speed_label.text = "速度 %.0f px/s" % GameState.obstacle_speed
+	# 分数＝存活时间：READY 时显示 0.0s，PLAYING 起每帧增长
+	_score_label.text = "%.1fs" % GameState.current_score()

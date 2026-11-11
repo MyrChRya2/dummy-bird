@@ -56,6 +56,20 @@ offset_bottom = 24.0
 position = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_tefeu")
 
+[node name="ScoreLabel" type="Label" parent="." unique_id=2000000001]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -72.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = 22.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 10
+text = "0.0s"
+horizontal_alignment = 2
+
 [node name="ReadyHint" type="Label" parent="." unique_id=887345201]
 visible = false
 layout_mode = 1

@@ -9,11 +9,98 @@ var state: State = State.BOOT:
 		if v == state: return
 		var prev := state
 		state = v
+		if v == State.READY:
+			_reset_run()          # 每进一次 READY = 新一局开始，计时归零
 		state_changed.emit(prev, v)
 
 ## 障碍物当前速度（px/s）——由 spawner 每帧写入，HUD 每帧读。
 ## 这里只做"缓存 + 转发"，谁都可以读，但只有 spawner 负责算它。
 var obstacle_speed: float = 0.0
+
+# ---------------- 分数（存活时间）----------------
+
+## 本局已存活秒数。PLAYING 时每帧累加；READY 时归零；
+## 暂停时世界整体 paused，Autoload 的 _process 也不会跑，所以天然不计时。
+var elapsed: float = 0.0
+
+## 上一局定格成绩（失败时写入），失败界面用它显示
+var last_score: float = 0.0
+
+## 历史最好成绩
+var best_score: float = 0.0
+
+## 排行榜：按分数降序，最多保留 KEEP_RECORDS 条
+var records: Array = []
+
+const RECORDS_PATH := "user://records.json"
+const KEEP_RECORDS := 10
+
+func _ready() -> void:
+	_load_records()
+
+func _process(delta: float) -> void:
+	if state == State.PLAYING:
+		elapsed += delta
+
+## 当前分数 = 存活时间（秒）
+func current_score() -> float:
+	return elapsed
+
+func _reset_run() -> void:
+	elapsed = 0.0
+
+## 结算一局：定格成绩、更新最高分与排行榜、写盘
+func _commit_run(reason: FailReason) -> void:
+	last_score = elapsed
+	if elapsed > best_score:
+		best_score = elapsed
+	records.append({
+		"score": elapsed,
+		"date": Time.get_datetime_string_from_system(false, false),
+		"reason": fail_reason_name(reason),
+	})
+	records.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		return float(a.get("score", 0.0)) > float(b.get("score", 0.0)))
+	while records.size() > KEEP_RECORDS:
+		records.pop_back()
+	_save_records()
+
+func fail_reason_name(reason: FailReason) -> String:
+	match reason:
+		FailReason.FELL_OUT:
+			return "FELL_OUT"
+		FailReason.HIT_OBSTACLE:
+			return "HIT_OBSTACLE"
+		_:
+			return "NONE"
+
+func _load_records() -> void:
+	records.clear()
+	best_score = 0.0
+	if not FileAccess.file_exists(RECORDS_PATH):
+		return
+	var f := FileAccess.open(RECORDS_PATH, FileAccess.READ)
+	if f == null:
+		return
+	var text := f.get_as_text()
+	f.close()
+	var data: Variant = JSON.parse_string(text)
+	if typeof(data) != TYPE_DICTIONARY:
+		return
+	best_score = float(data.get("best", 0.0))
+	var raw: Variant = data.get("records", [])
+	if typeof(raw) == TYPE_ARRAY:
+		for item: Variant in raw:
+			if typeof(item) == TYPE_DICTIONARY:
+				records.append(item)
+
+func _save_records() -> void:
+	var f := FileAccess.open(RECORDS_PATH, FileAccess.WRITE)
+	if f == null:
+		push_warning("无法写入成绩存档：%s" % RECORDS_PATH)
+		return
+	f.store_string(JSON.stringify({"best": best_score, "records": records}, "\t"))
+	f.close()
 
 # ---------------- 失败信号 ----------------
 
@@ -31,6 +118,7 @@ func report_failure(reason: FailReason) -> void:
 	if state != State.PLAYING:
 		return
 	last_fail_reason = reason
+	_commit_run(reason)          # 先定格成绩并写盘，再切状态（此时 elapsed 才是本局最终值）
 	state = State.GAME_OVER
 	failed.emit(reason)
 

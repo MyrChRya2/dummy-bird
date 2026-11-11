@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://cw5tspoelsjc8"]
+
+[node name="ScoreBourd" type="Control" unique_id=600871658]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 180.0
+
+[node name="Label" type="Label" parent="." unique_id=817840721]
+layout_mode = 0
+offset_left = 64.0
+offset_right = 256.0
+offset_bottom = 23.0
+text = "RANKING"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="VBoxContainer" parent="." unique_id=219494772]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 41.0
+offset_right = 256.0
+offset_bottom = 76.0
+
+[node name="Score1" type="Label" parent="HBoxContainer" unique_id=1032162541]
+layout_mode = 2
+theme_override_font_sizes/font_size = 6
+text = "00.00.00"
+vertical_alignment = 1
+
+[node name="Time" type="Label" parent="HBoxContainer/Score1" unique_id=744916469]
+layout_mode = 0
+offset_left = 146.0
+offset_top = 2.0
+offset_right = 192.0
+offset_bottom = 11.0
+theme_override_font_sizes/font_size = 6
+text = "HH:MM MM/DD"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Score2" type="Label" parent="HBoxContainer" unique_id=1311569566]
+layout_mode = 2
+theme_override_font_sizes/font_size = 6
+text = "00.00.00"
+vertical_alignment = 1
+
+[node name="Time" type="Label" parent="HBoxContainer/Score2" unique_id=746579809]
+layout_mode = 0
+offset_left = 128.0
+offset_right = 192.0
+offset_bottom = 9.0
+theme_override_font_sizes/font_size = 6
+text = "HH:MM MM/DD"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Score3" type="Label" parent="HBoxContainer" unique_id=978607045]
+layout_mode = 2
+theme_override_font_sizes/font_size = 6
+text = "00.00.00"
+vertical_alignment = 1
+
+[node name="Time" type="Label" parent="HBoxContainer/Score3" unique_id=1783175717]
+layout_mode = 0
+offset_left = 128.0
+offset_right = 192.0
+offset_bottom = 9.0
+theme_override_font_sizes/font_size = 6
+text = "HH:MM MM/DD"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ToGlobel" type="Button" parent="." unique_id=1222596124]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 144.0
+offset_right = 295.0
+offset_bottom = 168.0
+theme_override_font_sizes/font_size = 10
+text = "GLOBEL"
+
+[node name="Back" type="Button" parent="." unique_id=732398367]
+layout_mode = 0
+offset_left = 249.0
+offset_top = 8.0
+offset_right = 304.0
+offset_bottom = 32.0
+theme_override_font_sizes/font_size = 10
+text = "BACK"

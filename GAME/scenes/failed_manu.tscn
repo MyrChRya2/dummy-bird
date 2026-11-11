@@ -51,6 +51,31 @@ offset_top = 24.0
 offset_right = 176.0
 offset_bottom = 40.0
 
+[node name="ScoreLabel" type="Label" parent="." unique_id=2000000002]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 44.0
+offset_right = 176.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 10
+
+[node name="BestLabel" type="Label" parent="." unique_id=2000000003]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 176.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 10
+
+[node name="RankLabel" type="Label" parent="." unique_id=2000000004]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 88.0
+offset_right = 208.0
+offset_bottom = 172.0
+theme_override_font_sizes/font_size = 8
+text = "（暂无记录）"
+
 [node name="Buttons" type="VBoxContainer" parent="." unique_id=32487586]
 layout_mode = 0
 offset_left = 224.0
