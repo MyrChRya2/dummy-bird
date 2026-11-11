@@ -2,7 +2,7 @@
 # 数据来源是 GameState 的本地存档（user://records.json），本脚本不碰存档读写。
 extends Control
 
-@onready var _rows: VBoxContainer = $Rows
+@onready var _rows: VBoxContainer = $Scroll/Rows
 @onready var _back_button: Button = $Back
 @onready var _global_button: Button = $ToGlobal
 
