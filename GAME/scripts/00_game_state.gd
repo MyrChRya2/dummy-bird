@@ -47,10 +47,13 @@ func current_score() -> float:
 	return elapsed
 
 ## 把秒数格式化成「分.秒.毫秒」，与排行榜占位 "00.00.00" 对齐。
-## 例：12.3456 → "00.12.345"；83.05 → "01.23.050"
+## 例：12.3456 → "00.12.346"（毫秒位四舍五入）；83.05 → "01.23.050"
 func format_time(seconds: float) -> String:
+	# 第 1 步：秒 → 整毫秒（这里做四舍五入，0.4ms 舍、0.5ms 进）
 	var total_ms: int = int(roundf(maxf(seconds, 0.0) * 1000.0))
-	# 这里是**故意**的整数除法：分数就是截断取整（毫秒级），不需要四舍五入
+	# 第 2 步：把整毫秒按 60/1000 进制**拆成三个字段**（不是丢弃精度）：
+	#   83450ms → /60000 得 1 分（余 23450）→ /1000 得 23 秒（余 450）→ 450 毫秒
+	# 余数由下一级接住，一个毫秒都不丢，所以这里的整数除法是语义正确的。
 	@warning_ignore("integer_division")
 	var m: int = total_ms / 60000
 	@warning_ignore("integer_division")
