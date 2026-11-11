@@ -18,6 +18,7 @@ var speed := 100.0
 @export var accel_after_switch := 5.0     # 第二阶段加速度 px/s²
 @export var spacing := 138.0          # 相邻障碍物的水平间距 px
 @export var spawn_margin := 32.0      # 生成线在屏幕右缘外多少像素
+@export var log_spawn := false         # 打开后在输出面板打印每次生成（默认关，避免刷屏）
 
 var _elapsed := 0.0                   # 已经开始多久（秒）。READY/暂停时世界是暂停的，不会累计
 var _to_next := 0.0                   # 距离下一个障碍物还有多少像素
@@ -50,4 +51,5 @@ func _spawn() -> void:
 	ob.position = Vector2(get_viewport_rect().size.x + spawn_margin, curve.y_at(_n))
 	add_child(ob)
 	_n += 1
-	print("生成障碍物 @x=%.0f，场上 %d 个" % [ob.position.x, get_child_count()])
+	if log_spawn:
+		print("生成障碍物 @x=%.0f，场上 %d 个" % [ob.position.x, get_child_count()])
