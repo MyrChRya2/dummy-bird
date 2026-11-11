@@ -13,9 +13,10 @@ var speed := 100.0
 	set(v):
 		speed_start = v
 		speed = v                     # 拖滑块/改检查器时立刻生效（重开也从这个值开始）
-@export var speed_accel := 1.0        # 第一阶段加速度 px/s²（0 = 恒定速度）
-@export var accel_switch_speed := 400.0   # 速度达到这个值后改用第二阶段加速度（0 = 不切换）
-@export var accel_after_switch := 5.0     # 第二阶段加速度 px/s²
+## t=0 时的加速度 px/s²（曲线与 y 轴的交点）
+@export var accel_start := 10.0
+## 加速度的半衰期（秒）：每过这么久，加速度减半。越大 = 衰减越慢
+@export var accel_half_life := 10.0
 @export var spacing := 138.0          # 相邻障碍物的水平间距 px
 @export var spawn_margin := 32.0      # 生成线在屏幕右缘外多少像素
 @export var log_spawn := false         # 打开后在输出面板打印每次生成（默认关，避免刷屏）
@@ -29,15 +30,17 @@ func _ready() -> void:
 		curve = ObstacleCurve.new()
 	speed = speed_start
 
-## 当前应该在用哪一档加速度
+## 加速度按指数衰减：a(t) = accel_start · 0.5^(t / accel_half_life)
+## 性质：单调递减、恒大于 0、过 y 轴且交点 = accel_start。
+## 因为速度是它的积分，所以速度有**自然上限**（最多再涨 accel_start·accel_half_life/ln2）。
 func current_accel() -> float:
-	if accel_switch_speed > 0.0 and speed >= accel_switch_speed:
-		return accel_after_switch
-	return speed_accel
+	if accel_half_life <= 0.0:
+		return 0.0
+	return accel_start * pow(0.5, _elapsed / accel_half_life)
 
 func _physics_process(delta: float) -> void:
 	_elapsed += delta
-	# 用"每帧累加"而不是 speed_start + a*t：这样加速度突变时速度是**连续的**（不会跳变）
+	# 用"每帧累加"而不是 speed_start + a*t：加速度随时间连续变化，速度保持连续、不会跳变
 	speed += current_accel() * delta
 	GameState.obstacle_speed = speed          # 缓存给 HUD / 其它只读方
 	_to_next -= speed * delta

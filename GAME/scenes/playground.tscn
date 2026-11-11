@@ -20,9 +20,8 @@ position = Vector2(121, 70)
 script = ExtResource("2_qchbg")
 curve = ExtResource("5_curve")
 speed_start = 120.0
-speed_accel = 10.0
-accel_switch_speed = 200.0
-accel_after_switch = 2.0
+accel_start = 10.0
+accel_half_life = 10.0
 
 [node name="CurvePreview" type="Node2D" parent="ObstacleSpawner" unique_id=868926970]
 script = ExtResource("3_kddj0")

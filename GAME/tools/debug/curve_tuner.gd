@@ -85,9 +85,8 @@ func _build() -> void:
 	_heading(right, "生成 (Spawner)")
 	_add_slider(right, "spacing", 40.0, 480.0, 1.0, _spawner)
 	_add_slider(right, "speed_start", 0.0, 400.0, 1.0, _spawner)
-	_add_slider(right, "speed_accel", 0.0, 20.0, 0.1, _spawner)
-	_add_slider(right, "accel_switch_speed", 0.0, 1000.0, 10.0, _spawner)
-	_add_slider(right, "accel_after_switch", 0.0, 30.0, 0.5, _spawner)
+	_add_slider(right, "accel_start", 0.0, 30.0, 0.5, _spawner)
+	_add_slider(right, "accel_half_life", 1.0, 60.0, 1.0, _spawner)
 	_add_slider(right, "noise_seed", 0.0, 99999.0, 1.0)
 
 	var print_button := Button.new()
@@ -120,7 +119,7 @@ func _print_params() -> void:
 	for p in ["center_y", "half_range", "amp1", "freq1", "amp2", "freq2", "noise_amp", "noise_step", "noise_seed"]:
 		out.append("%s = %s" % [p, _fmt_full(_curve.get(p))])
 	out.append("========== 生成参数（Spawner 节点）==========")
-	for p in ["spacing", "speed_start", "speed_accel", "accel_switch_speed", "accel_after_switch", "spawn_margin"]:
+	for p in ["spacing", "speed_start", "accel_start", "accel_half_life", "spawn_margin"]:
 		out.append("%s = %s" % [p, _fmt_full(_spawner.get(p))])
 	print("\n".join(out))
 
