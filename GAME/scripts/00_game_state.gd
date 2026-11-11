@@ -103,6 +103,14 @@ func _load_records() -> void:
 			if typeof(item) == TYPE_DICTIONARY:
 				records.append(item)
 
+## 清空所有本地成绩：排行榜、最高分、上一局成绩，并把存档写成空
+## （设置面板的「重置游戏」用它）
+func clear_records() -> void:
+	records.clear()
+	best_score = 0.0
+	last_score = 0.0
+	_save_records()
+
 func _save_records() -> void:
 	var f := FileAccess.open(RECORDS_PATH, FileAccess.WRITE)
 	if f == null:

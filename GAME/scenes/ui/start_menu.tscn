@@ -55,6 +55,7 @@ offset_bottom = 163.0
 
 [node name="StartButton" type="Button" parent="Buttons" unique_id=2122257560]
 layout_mode = 2
+theme_override_font_sizes/font_size = 10
 text = "START"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/StartButton" unique_id=88685475]
@@ -63,6 +64,7 @@ sprite_frames = SubResource("SpriteFrames_cs4y6")
 
 [node name="SettingsButton" type="Button" parent="Buttons" unique_id=1231350186]
 layout_mode = 2
+theme_override_font_sizes/font_size = 10
 text = "SETTINGS"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Buttons/SettingsButton" unique_id=1239506933]
@@ -71,8 +73,10 @@ sprite_frames = SubResource("SpriteFrames_cs4y6")
 
 [node name="RankingButton" type="Button" parent="Buttons" unique_id=2000000010]
 layout_mode = 2
+theme_override_font_sizes/font_size = 10
 text = "RANKING"
 
 [node name="QuitButton" type="Button" parent="Buttons" unique_id=1279015483]
 layout_mode = 2
+theme_override_font_sizes/font_size = 10
 text = "QUIT"

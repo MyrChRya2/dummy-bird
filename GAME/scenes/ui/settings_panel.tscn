@@ -41,9 +41,13 @@ text = "占位：音量 / 全屏 / 返回 还没做"
 layout_mode = 0
 offset_left = 16.0
 offset_top = 60.0
-offset_right = 96.0
-offset_bottom = 88.0
+offset_right = 110.0
+offset_bottom = 116.0
 theme = ExtResource("1_theme")
+
+[node name="ResetButton" type="Button" parent="Buttons"]
+layout_mode = 2
+text = "RESET DATA"
 
 [node name="BackButton" type="Button" parent="Buttons"]
 layout_mode = 2
