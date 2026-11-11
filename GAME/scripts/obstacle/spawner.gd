@@ -24,11 +24,23 @@ var speed := 100.0
 var _elapsed := 0.0                   # 已经开始多久（秒）。READY/暂停时世界是暂停的，不会累计
 var _to_next := 0.0                   # 距离下一个障碍物还有多少像素
 
+## 本局使用的随机种子（进入关卡的时间戳，毫秒）。记录它便于复现某一局
+var level_seed: int = 0
+
 func _ready() -> void:
 	# 兜底：检查器里没指 curve 资源时，自己建一个默认的（参数可后期用 .tres 覆盖）
 	if curve == null:
 		curve = ObstacleCurve.new()
+	else:
+		# 关键：先 duplicate 一份。curve 指向的是共享的 .tres 实例，
+		# 直接改它的 noise_seed 会污染资源本身（下一局仍是旧值/影响编辑器里的资源）
+		curve = curve.duplicate()
+	# 每局用「进入关卡的时间戳（毫秒）」当种子 → 每条曲线都不同，且可复现
+	level_seed = int(Time.get_unix_time_from_system() * 1000.0)
+	curve.noise_seed = level_seed
 	speed = speed_start
+	if log_spawn:
+		print("本局随机种子（时间戳毫秒）: %d" % level_seed)
 
 ## 加速度按指数衰减：a(t) = accel_start · 0.5^(t / accel_half_life)
 ## 性质：单调递减、恒大于 0、过 y 轴且交点 = accel_start。
